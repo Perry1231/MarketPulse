@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <title>About</title>
+  <style>
+    * { margin: 0; padding: 0; }
+    body {
+      background: #ffffff;
+      font-family: Arial, sans-serif;
+      min-height: 200vh;
+    }
+
+    .nav {
+      position: fixed;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%) rotateX(0deg);
+      width: 70%;
+      max-width: 800px;
+      height: 60px;
+      background: #111827;
+      border-radius: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 2rem;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+      transition: transform 0.5s ease, opacity 0.3s ease;
+      z-index: 1000;
+    }
+
+    .nav.hidden {
+      transform: translateX(-50%) rotateX(180deg);
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .nav a {
+      color: #fff;
+      text-decoration: none;
+      font-size: 1rem;
+      font-weight: 500;
+      padding: 0.5rem 1rem;
+      border-radius: 20px;
+      transition: background 0.2s;
+    }
+
+    .nav a:hover {
+      background: rgba(255,255,255,0.1);
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="nav" id="nav">
+    <a href="index.html">Home</a>
+    <a href="about.html">About</a>
+    <a href="services.html">Services</a>
+    <a href="account.html">Account</a>
+  </nav>
+
+  <script>
+    let lastScroll = 0;
+    const nav = document.getElementById('nav');
+
+    window.addEventListener('scroll', () => {
+      const currentScroll = window.pageYOffset;
+
+      if (currentScroll > lastScroll && currentScroll > 100) {
+        nav.classList.add('hidden');
+      } else {
+        nav.classList.remove('hidden');
+      }
+
+      lastScroll = currentScroll;
+    });
+  </script>
+
+</body>
+</html>
