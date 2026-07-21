@@ -9,7 +9,9 @@
       background: #ffffff;
       font-family: Arial, sans-serif;
       color: #111827;
-      min-height: 200vh;
+      min-height: 100vh;
+    display: flex;
+    flex-direction: column;
     }
 
     .nav {
@@ -156,7 +158,8 @@
     </div>
   </nav>
 
-  <section class="markets">
+  <div style="flex: 1;">
+    <section class="markets">
     <a class="market-card" href="stocks.html">
       <div class="market-card__title" data-i18n-key="stocks">Акції</div>
       <div class="market-card__subtitle" data-i18n-key="stocks_sub"> NASDAQ, NYSE, інші біржі </div>
@@ -197,6 +200,14 @@
       <div class="market-card__subtitle" data-i18n-key="metals_sub"> Мідь, алюміній, цинк... </div>
     </a>
   </section>
+  </div>
+
+  <footer style="background: #111827; color: #9ca3af; text-align: center; padding: 2rem; font-size: 0.9rem; margin-top: 3rem;">
+    <p data-i18n-key="footer_desc">Market Snapshot — quick view of stocks, crypto, forex, oil, gold, bonds and indices.</p>
+    <p style="margin-top: 0.5rem;">
+      <a href="https://github.com/" target="_blank" rel="noopener noreferrer" style="color: #60a5fa; text-decoration: none;">GitHub</a>
+    </p>
+  </footer>
 
   <script>
     const translations = {
