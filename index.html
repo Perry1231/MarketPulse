@@ -25,7 +25,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 2rem;
+      gap: 1.5rem;
       box-shadow: 0 10px 30px rgba(0,0,0,0.15);
       transition: transform 0.5s ease, opacity 0.3s ease;
       z-index: 1000;
@@ -56,6 +56,48 @@
       color: #fff;
     }
 
+    .lang-switcher {
+      position: relative;
+    }
+
+    .lang-btn {
+      background: rgba(255,255,255,0.1);
+      border: none;
+      color: #fff;
+      padding: 0.4rem 0.8rem;
+      border-radius: 20px;
+      cursor: pointer;
+      font-size: 0.9rem;
+    }
+
+    .lang-dropdown {
+      display: none;
+      position: absolute;
+      top: 110%;
+      right: 0;
+      background: #1f2937;
+      border-radius: 12px;
+      overflow: hidden;
+      min-width: 140px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+    }
+
+    .lang-dropdown.show {
+      display: block;
+    }
+
+    .lang-dropdown a {
+      display: block;
+      padding: 0.6rem 1rem;
+      color: #fff;
+      text-decoration: none;
+      font-size: 0.9rem;
+    }
+
+    .lang-dropdown a:hover {
+      background: #374151;
+    }
+
     .markets {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
@@ -72,6 +114,9 @@
       padding: 1.25rem;
       cursor: pointer;
       transition: box-shadow 0.2s, transform 0.15s, border-color 0.2s;
+      text-decoration: none;
+      color: inherit;
+      display: block;
     }
 
     .market-card:hover {
@@ -96,50 +141,181 @@
 <body>
 
   <nav class="nav" id="nav">
-    <a href="index.html" class="active">Home</a>
-    <a href="about.html">About</a>
-    <a href="services.html">Services</a>
-    <a href="account.html">Account</a>
+    <a href="index.html" class="active" data-i18n-key="home">Home</a>
+    <a href="about.html" data-i18n-key="about">About</a>
+    <a href="services.html" data-i18n-key="services">Services</a>
+    <a href="account.html" data-i18n-key="account">Account</a>
+    <div class="lang-switcher">
+      <button class="lang-btn" id="langBtn" data-i18n-key="lang">🌐 EN</button>
+      <div class="lang-dropdown" id="langDropdown">
+        <a href="#" data-lang="en">English</a>
+        <a href="#" data-lang="de">Deutsch</a>
+        <a href="#" data-lang="fr">Français</a>
+        <a href="#" data-lang="ja">日本語</a>
+      </div>
+    </div>
   </nav>
 
   <section class="markets">
     <a class="market-card" href="stocks.html">
-      <div class="market-card__title">Акції</div>
-      <div class="market-card__subtitle"> NASDAQ, NYSE, інші біржі </div>
+      <div class="market-card__title" data-i18n-key="stocks">Акції</div>
+      <div class="market-card__subtitle" data-i18n-key="stocks_sub"> NASDAQ, NYSE, інші біржі </div>
     </a>
 
     <a class="market-card" href="forex.html">
-      <div class="market-card__title">Валюти</div>
-      <div class="market-card__subtitle"> Курс валют, парі </div>
+      <div class="market-card__title" data-i18n-key="forex">Валюти</div>
+      <div class="market-card__subtitle" data-i18n-key="forex_sub"> Курс валют, парі </div>
     </a>
 
     <a class="market-card" href="crypto.html">
-      <div class="market-card__title">Криптовалюта</div>
-      <div class="market-card__subtitle"> BTC, ETH, SOL, BNB... </div>
+      <div class="market-card__title" data-i18n-key="crypto">Криптовалюта</div>
+      <div class="market-card__subtitle" data-i18n-key="crypto_sub"> BTC, ETH, SOL, BNB... </div>
     </a>
 
     <a class="market-card" href="oil.html">
-      <div class="market-card__title">Нафта</div>
-      <div class="market-card__subtitle"> WTI, Brent </div>
+      <div class="market-card__title" data-i18n-key="oil">Нафта</div>
+      <div class="market-card__subtitle" data-i18n-key="oil_sub"> WTI, Brent </div>
     </a>
 
     <a class="market-card" href="gold.html">
-      <div class="market-card__title">Золото</div>
-      <div class="market-card__subtitle"> XAU, XAG, кошти </div>
+      <div class="market-card__title" data-i18n-key="gold">Золото</div>
+      <div class="market-card__subtitle" data-i18n-key="gold_sub"> XAU, XAG, кошти </div>
     </a>
 
     <a class="market-card" href="bonds.html">
-      <div class="market-card__title">Облигації</div>
-      <div class="market-card__subtitle"> US Treasuries, дохідність </div>
+      <div class="market-card__title" data-i18n-key="bonds">Облигації</div>
+      <div class="market-card__subtitle" data-i18n-key="bonds_sub"> US Treasuries, дохідність </div>
     </a>
 
     <a class="market-card" href="indices.html">
-      <div class="market-card__title">Індекси</div>
-      <div class="market-card__subtitle"> S&P 500, Nasdaq, Dow... </div>
+      <div class="market-card__title" data-i18n-key="indices">Індекси</div>
+      <div class="market-card__subtitle" data-i18n-key="indices_sub"> S&P 500, Nasdaq, Dow... </div>
     </a>
   </section>
 
   <script>
+    const translations = {
+      en: {
+        home: "Home",
+        about: "About",
+        services: "Services",
+        account: "Account",
+        lang: "🌐 EN",
+        stocks: "Stocks",
+        stocks_sub: "NASDAQ, NYSE, other exchanges",
+        forex: "Forex",
+        forex_sub: "Currency rates, pairs",
+        crypto: "Cryptocurrency",
+        crypto_sub: "BTC, ETH, SOL, BNB...",
+        oil: "Oil",
+        oil_sub: "WTI, Brent",
+        gold: "Gold",
+        gold_sub: "XAU, XAG, metals",
+        bonds: "Bonds",
+        bonds_sub: "US Treasuries, yields",
+        indices: "Indices",
+        indices_sub: "S&P 500, Nasdaq, Dow..."
+      },
+      de: {
+        home: "Startseite",
+        about: "Über uns",
+        services: "Dienstleistungen",
+        account: "Konto",
+        lang: "🌐 DE",
+        stocks: "Aktien",
+        stocks_sub: "NASDAQ, NYSE, andere Börsen",
+        forex: "Devisen",
+        forex_sub: "Wechselkurse, Paare",
+        crypto: "Kryptowährung",
+        crypto_sub: "BTC, ETH, SOL, BNB...",
+        oil: "Öl",
+        oil_sub: "WTI, Brent",
+        gold: "Gold",
+        gold_sub: "XAU, XAG, Metalle",
+        bonds: "Anleihen",
+        bonds_sub: "US-Staatsanleihen, Renditen",
+        indices: "Indizes",
+        indices_sub: "S&P 500, Nasdaq, Dow..."
+      },
+      fr: {
+        home: "Accueil",
+        about: "À propos",
+        services: "Services",
+        account: "Compte",
+        lang: "🌐 FR",
+        stocks: "Actions",
+        stocks_sub: "NASDAQ, NYSE, autres bourses",
+        forex: "Forex",
+        forex_sub: "Taux de change, paires",
+        crypto: "Cryptomonnaie",
+        crypto_sub: "BTC, ETH, SOL, BNB...",
+        oil: "Pétrole",
+        oil_sub: "WTI, Brent",
+        gold: "Or",
+        gold_sub: "XAU, XAG, métaux",
+        bonds: "Obligations",
+        bonds_sub: "Bons du Trésor américain, rendements",
+        indices: "Indices",
+        indices_sub: "S&P 500, Nasdaq, Dow..."
+      },
+      ja: {
+        home: "ホーム",
+        about: "概要",
+        services: "サービス",
+        account: "アカウント",
+        lang: "🌐 JA",
+        stocks: "株式",
+        stocks_sub: "NASDAQ、NYSE、その他の取引所",
+        forex: "為替",
+        forex_sub: "為替レート、通貨ペア",
+        crypto: "暗号通貨",
+        crypto_sub: "BTC、ETH、SOL、BNB...",
+        oil: "石油",
+        oil_sub: "WTI、Brent",
+        gold: "金",
+        gold_sub: "XAU、XAG、金属",
+        bonds: "債券",
+        bonds_sub: "米国債、利回り",
+        indices: "指数",
+        indices_sub: "S&P 500、Nasdaq、Dow..."
+      }
+    };
+
+    function applyLanguage(lang) {
+      document.documentElement.lang = lang;
+      document.querySelectorAll('[data-i18n-key]').forEach(el => {
+        const key = el.getAttribute('data-i18n-key');
+        if (translations[lang] && translations[lang][key]) {
+          el.textContent = translations[lang][key];
+        }
+      });
+      localStorage.setItem('lang', lang);
+    }
+
+    const savedLang = localStorage.getItem('lang') || 'en';
+    applyLanguage(savedLang);
+
+    const langBtn = document.getElementById('langBtn');
+    const langDropdown = document.getElementById('langDropdown');
+
+    langBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      langDropdown.classList.toggle('show');
+    });
+
+    document.querySelectorAll('#langDropdown a').forEach(link => {
+      link.addEventListener('click', (e) => {
+        e.preventDefault();
+        const lang = link.getAttribute('data-lang');
+        applyLanguage(lang);
+        langDropdown.classList.remove('show');
+      });
+    });
+
+    document.addEventListener('click', () => {
+      langDropdown.classList.remove('show');
+    });
+
     let lastScroll = 0;
     const nav = document.getElementById('nav');
 
