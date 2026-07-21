@@ -8,6 +8,7 @@
     body {
       background: #ffffff;
       font-family: Arial, sans-serif;
+      color: #111827;
       min-height: 200vh;
     }
 
@@ -54,6 +55,42 @@
       background: #2563eb;
       color: #fff;
     }
+
+    .markets {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 1.25rem;
+      padding: 140px 2rem 60px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .market-card {
+      background: #f9fafb;
+      border: 1px solid #e5e7eb;
+      border-radius: 16px;
+      padding: 1.25rem;
+      cursor: pointer;
+      transition: box-shadow 0.2s, transform 0.15s, border-color 0.2s;
+    }
+
+    .market-card:hover {
+      border-color: #2563eb;
+      box-shadow: 0 10px 25px rgba(37, 99, 235, 0.12);
+      transform: translateY(-2px);
+    }
+
+    .market-card__title {
+      font-weight: 700;
+      font-size: 1.1rem;
+      margin-bottom: 0.35rem;
+      color: #111827;
+    }
+
+    .market-card__subtitle {
+      color: #6b7280;
+      font-size: 0.9rem;
+    }
   </style>
 </head>
 <body>
@@ -64,6 +101,43 @@
     <a href="services.html">Services</a>
     <a href="account.html">Account</a>
   </nav>
+
+  <section class="markets">
+    <a class="market-card" href="stocks.html">
+      <div class="market-card__title">Акції</div>
+      <div class="market-card__subtitle"> NASDAQ, NYSE, інші біржі </div>
+    </a>
+
+    <a class="market-card" href="forex.html">
+      <div class="market-card__title">Валюти</div>
+      <div class="market-card__subtitle"> Курс валют, парі </div>
+    </a>
+
+    <a class="market-card" href="crypto.html">
+      <div class="market-card__title">Криптовалюта</div>
+      <div class="market-card__subtitle"> BTC, ETH, SOL, BNB... </div>
+    </a>
+
+    <a class="market-card" href="oil.html">
+      <div class="market-card__title">Нафта</div>
+      <div class="market-card__subtitle"> WTI, Brent </div>
+    </a>
+
+    <a class="market-card" href="gold.html">
+      <div class="market-card__title">Золото</div>
+      <div class="market-card__subtitle"> XAU, XAG, кошти </div>
+    </a>
+
+    <a class="market-card" href="bonds.html">
+      <div class="market-card__title">Облигації</div>
+      <div class="market-card__subtitle"> US Treasuries, дохідність </div>
+    </a>
+
+    <a class="market-card" href="indices.html">
+      <div class="market-card__title">Індекси</div>
+      <div class="market-card__subtitle"> S&P 500, Nasdaq, Dow... </div>
+    </a>
+  </section>
 
   <script>
     let lastScroll = 0;
