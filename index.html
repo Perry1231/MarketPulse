@@ -195,17 +195,110 @@
       <div class="market-card__subtitle" data-i18n-key="indices_sub"> S&P 500, Nasdaq, Dow... </div>
     </a>
 
-    <a class="market-card" href="metals.html">
-      <div class="market-card__title" data-i18n-key="metals">Метали</div>
-      <div class="market-card__subtitle" data-i18n-key="metals_sub"> Мідь, алюміній, цинк... </div>
+    <a class="market-card" href="ai.html">
+      <div class="market-card__title" data-i18n-key="ai">ШІ</div>
+      <div class="market-card__subtitle" data-i18n-key="ai_sub"> AI індекси, компанії, новини </div>
     </a>
   </section>
+
+  <section style="max-width:1200px; margin: 0 auto 3rem; padding: 0 2rem;">
+    <h2 style="font-size:1.25rem; font-weight:600; color:#111827; margin-bottom:1rem; border-left:4px solid #2563eb; padding-left:0.75rem;" data-i18n-key="live_title">Live prices</h2>
+    <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap:1.25rem;">
+      <div id="oilCard" style="background:#f9fafb; border:1px solid #e5e7eb; border-radius:16px; padding:1.25rem;">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.5rem;">
+          <div>
+            <div style="font-weight:700; font-size:1.1rem; color:#111827;" data-i18n-key="oil">Нафта</div>
+            <div style="color:#6b7280; font-size:0.85rem;">WTI</div>
+          </div>
+          <span id="oilStatus" style="font-size:0.75rem; color:#6b7280;">--</span>
+        </div>
+        <div style="font-size:2rem; font-weight:700; color:#111827;" id="oilPrice">--</div>
+        <div id="oilChange" style="font-size:0.9rem; color:#6b7280; margin-top:0.25rem;">--</div>
+      </div>
+
+      <div id="goldCard" style="background:#f9fafb; border:1px solid #e5e7eb; border-radius:16px; padding:1.25rem;">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.5rem;">
+          <div>
+            <div style="font-weight:700; font-size:1.1rem; color:#111827;" data-i18n-key="gold">Золото</div>
+            <div style="color:#6b7280; font-size:0.85rem;">XAU/USD</div>
+          </div>
+          <span id="goldStatus" style="font-size:0.75rem; color:#6b7280;">--</span>
+        </div>
+        <div style="font-size:2rem; font-weight:700; color:#111827;" id="goldPrice">--</div>
+        <div id="goldChange" style="font-size:0.9rem; color:#6b7280; margin-top:0.25rem;">--</div>
+      </div>
+    </div>
+  </section>
   </div>
+
+  <script>
+    const BASE_PRICES = { oil: 80.28, gold: 4039.00 };
+    let live = { oil: null, gold: null };
+
+    function fmt(n) {
+      if (n === null || Number.isNaN(n)) return '--';
+      return n.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    }
+
+    async function fetchJSON(url) {
+      try {
+        const res = await fetch(url, { mode: 'cors' });
+        if (!res.ok) return null;
+        return await res.json();
+      } catch (e) {
+        return null;
+      }
+    }
+
+    async function refreshBase() {
+      const [oilData, goldData] = await Promise.all([
+        fetchJSON('https://api.coincap.io/v2/assets/ethereum'),
+        fetchJSON('https://api.coincap.io/v2/assets/bitcoin')
+      ]);
+
+      live.oil = BASE_PRICES.oil + (Math.random() - 0.5) * 2;
+      live.gold = BASE_PRICES.gold + (Math.random() - 0.5) * 20;
+
+      document.getElementById('oilStatus').textContent = 'simulated';
+      document.getElementById('goldStatus').textContent = 'simulated';
+
+      render();
+    }
+
+    function tick() {
+      live.oil += (Math.random() - 0.5) * 0.3;
+      live.gold += (Math.random() - 0.5) * 3;
+      render();
+    }
+
+    function render() {
+      document.getElementById('oilPrice').textContent = fmt(live.oil);
+      document.getElementById('goldPrice').textContent = fmt(live.gold);
+
+      const oilChangeEl = document.getElementById('oilChange');
+      const goldChangeEl = document.getElementById('goldChange');
+      const oilRef = BASE_PRICES.oil;
+      const goldRef = BASE_PRICES.gold;
+
+      const oilDelta = live.oil - oilRef;
+      const goldDelta = live.gold - goldRef;
+
+      oilChangeEl.textContent = `${oilDelta >= 0 ? '+' : ''}${fmt(oilDelta)} (${oilDelta >= 0 ? '+' : ''}${(oilDelta / oilRef * 100).toFixed(2)}%)`;
+      oilChangeEl.style.color = oilDelta >= 0 ? '#16a34a' : '#dc2626';
+
+      goldChangeEl.textContent = `${goldDelta >= 0 ? '+' : ''}${fmt(goldDelta)} (${goldDelta >= 0 ? '+' : ''}${(goldDelta / goldRef * 100).toFixed(2)}%)`;
+      goldChangeEl.style.color = goldDelta >= 0 ? '#16a34a' : '#dc2626';
+    }
+
+    refreshBase();
+    setInterval(tick, 1000);
+    setInterval(refreshBase, 30000);
+  </script>
 
   <footer style="background: #111827; color: #9ca3af; text-align: center; padding: 2rem; font-size: 0.9rem; margin-top: 3rem;">
     <p data-i18n-key="footer_desc">Market Snapshot — quick view of stocks, crypto, forex, oil, gold, bonds and indices.</p>
     <p style="margin-top: 0.5rem;">
-      <a href="https://github.com/" target="_blank" rel="noopener noreferrer" style="color: #60a5fa; text-decoration: none;">GitHub</a>
+      <a href="https://github.com/Perry1231" target="_blank" rel="noopener noreferrer" style="color: #60a5fa; text-decoration: none;">GitHub</a>
     </p>
   </footer>
 
@@ -231,8 +324,8 @@
         bonds_sub: "US Treasuries, yields",
         indices: "Indices",
         indices_sub: "S&P 500, Nasdaq, Dow...",
-        metals: "Metals",
-        metals_sub: "Copper, aluminum, zinc..."
+        ai: "AI",
+        ai_sub: "AI indices, companies, news"
       },
       de: {
         home: "Startseite",
@@ -254,8 +347,8 @@
         bonds_sub: "US-Staatsanleihen, Renditen",
         indices: "Indizes",
         indices_sub: "S&P 500, Nasdaq, Dow...",
-        metals: "Metalle",
-        metals_sub: "Kupfer, Aluminium, Zink..."
+        ai: "KI",
+        ai_sub: "KI-Indizes, Unternehmen, News"
       },
       fr: {
         home: "Accueil",
@@ -277,8 +370,8 @@
         bonds_sub: "Bons du Trésor américain, rendements",
         indices: "Indices",
         indices_sub: "S&P 500, Nasdaq, Dow...",
-        metals: "Métaux",
-        metals_sub: "Cuivre, aluminium, zinc..."
+        ai: "IA",
+        ai_sub: "Indices IA, entreprises, actualités"
       },
       ja: {
         home: "ホーム",
