@@ -2,7 +2,7 @@
 <html lang="uk">
 <head>
   <meta charset="UTF-8">
-  <title>Новий проект</title>
+  <title>Market Snapshot</title>
   <style>
     * { margin: 0; padding: 0; }
     body {
@@ -10,8 +10,8 @@
       font-family: Arial, sans-serif;
       color: #111827;
       min-height: 100vh;
-    display: flex;
-    flex-direction: column;
+      display: flex;
+      flex-direction: column;
     }
 
     .nav {
@@ -22,13 +22,13 @@
       width: 70%;
       max-width: 800px;
       height: 60px;
-      background: #111827;
+      background: #000000;
       border-radius: 40px;
       display: flex;
       align-items: center;
       justify-content: center;
       gap: 1.5rem;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.4);
       transition: transform 0.5s ease, opacity 0.3s ease;
       z-index: 1000;
     }
@@ -104,7 +104,7 @@
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
       gap: 1.25rem;
-      padding: 140px 2rem 60px;
+      padding: 140px 2rem 20px;
       max-width: 1200px;
       margin: 0 auto;
     }
@@ -138,10 +138,63 @@
       color: #6b7280;
       font-size: 0.9rem;
     }
+
+    .live-section {
+      max-width: 1200px;
+      margin: 0 auto 3rem;
+      padding: 0 2rem;
+    }
+
+    .live-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 1.25rem;
+    }
+
+    .tile {
+      background: #f9fafb;
+      border: 1px solid #e5e7eb;
+      border-radius: 16px;
+      padding: 1.25rem;
+    }
+
+    .tile-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.5rem;
+    }
+
+    .tile-title {
+      font-weight: 700;
+      font-size: 1.1rem;
+      color: #111827;
+    }
+
+    .tile-meta {
+      color: #6b7280;
+      font-size: 0.85rem;
+    }
+
+    .tile-status {
+      font-size: 0.75rem;
+      color: #6b7280;
+    }
+
+    .tile-price {
+      font-size: 2rem;
+      font-weight: 700;
+      color: #111827;
+    }
+
+    .tile-change {
+      font-size: 0.9rem;
+      color: #6b7280;
+      margin-top: 0.25rem;
+    }
   </style>
 </head>
 <body>
-
   <nav class="nav" id="nav">
     <a href="index.html" class="active" data-i18n-key="home">Home</a>
     <a href="about.html" data-i18n-key="about">About</a>
@@ -160,142 +213,88 @@
 
   <div style="flex: 1;">
     <section class="markets">
-    <a class="market-card" href="stocks.html">
-      <div class="market-card__title" data-i18n-key="stocks">Акції</div>
-      <div class="market-card__subtitle" data-i18n-key="stocks_sub"> NASDAQ, NYSE, інші біржі </div>
-    </a>
+      <a class="market-card" href="stocks.html">
+        <div class="market-card__title" data-i18n-key="stocks">Акції</div>
+        <div class="market-card__subtitle" data-i18n-key="stocks_sub">NASDAQ, NYSE, інші біржі</div>
+      </a>
 
-    <a class="market-card" href="forex.html">
-      <div class="market-card__title" data-i18n-key="forex">Валюти</div>
-      <div class="market-card__subtitle" data-i18n-key="forex_sub"> Курс валют, парі </div>
-    </a>
+      <a class="market-card" href="forex.html">
+        <div class="market-card__title" data-i18n-key="forex">Валюти</div>
+        <div class="market-card__subtitle" data-i18n-key="forex_sub">Курс валют, парі</div>
+      </a>
 
-    <a class="market-card" href="crypto.html">
-      <div class="market-card__title" data-i18n-key="crypto">Криптовалюта</div>
-      <div class="market-card__subtitle" data-i18n-key="crypto_sub"> BTC, ETH, SOL, BNB... </div>
-    </a>
+      <a class="market-card" href="crypto.html">
+        <div class="market-card__title" data-i18n-key="crypto">Криптовалюта</div>
+        <div class="market-card__subtitle" data-i18n-key="crypto_sub">BTC, ETH, SOL, BNB...</div>
+      </a>
 
-    <a class="market-card" href="oil.html">
-      <div class="market-card__title" data-i18n-key="oil">Нафта</div>
-      <div class="market-card__subtitle" data-i18n-key="oil_sub"> WTI, Brent </div>
-    </a>
+      <a class="market-card" href="oil.html">
+        <div class="market-card__title" data-i18n-key="oil">Нафта</div>
+        <div class="market-card__subtitle" data-i18n-key="oil_sub">WTI, Brent</div>
+      </a>
 
-    <a class="market-card" href="gold.html">
-      <div class="market-card__title" data-i18n-key="gold">Золото</div>
-      <div class="market-card__subtitle" data-i18n-key="gold_sub"> XAU, XAG, кошти </div>
-    </a>
+      <a class="market-card" href="gold.html">
+        <div class="market-card__title" data-i18n-key="gold">Золото</div>
+        <div class="market-card__subtitle" data-i18n-key="gold_sub">XAU, XAG, метали</div>
+      </a>
 
-    <a class="market-card" href="bonds.html">
-      <div class="market-card__title" data-i18n-key="bonds">Облигації</div>
-      <div class="market-card__subtitle" data-i18n-key="bonds_sub"> US Treasuries, дохідність </div>
-    </a>
+      <a class="market-card" href="bonds.html">
+        <div class="market-card__title" data-i18n-key="bonds">Облигації</div>
+        <div class="market-card__subtitle" data-i18n-key="bonds_sub">US Treasuries, дохідність</div>
+      </a>
 
-    <a class="market-card" href="indices.html">
-      <div class="market-card__title" data-i18n-key="indices">Індекси</div>
-      <div class="market-card__subtitle" data-i18n-key="indices_sub"> S&P 500, Nasdaq, Dow... </div>
-    </a>
+      <a class="market-card" href="indices.html">
+        <div class="market-card__title" data-i18n-key="indices">Індекси</div>
+        <div class="market-card__subtitle" data-i18n-key="indices_sub">S&P 500, Nasdaq, Dow...</div>
+      </a>
 
-    <a class="market-card" href="ai.html">
-      <div class="market-card__title" data-i18n-key="ai">ШІ</div>
-      <div class="market-card__subtitle" data-i18n-key="ai_sub"> AI індекси, компанії, новини </div>
-    </a>
-  </section>
+      <a class="market-card" href="ai.html">
+        <div class="market-card__title" data-i18n-key="ai">ШІ</div>
+        <div class="market-card__subtitle" data-i18n-key="ai_sub">AI індекси, компанії, новини</div>
+      </a>
+    </section>
 
-  <section style="max-width:1200px; margin: 0 auto 3rem; padding: 0 2rem;">
-    <h2 style="font-size:1.25rem; font-weight:600; color:#111827; margin-bottom:1rem; border-left:4px solid #2563eb; padding-left:0.75rem;" data-i18n-key="live_title">Live prices</h2>
-    <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap:1.25rem;">
-      <div id="oilCard" style="background:#f9fafb; border:1px solid #e5e7eb; border-radius:16px; padding:1.25rem;">
-        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.5rem;">
-          <div>
-            <div style="font-weight:700; font-size:1.1rem; color:#111827;" data-i18n-key="oil">Нафта</div>
-            <div style="color:#6b7280; font-size:0.85rem;">WTI</div>
+    <section class="live-section">
+      <h2 style="font-size:1.25rem; font-weight:600; color:#111827; margin-bottom:1rem; border-left:4px solid #2563eb; padding-left:0.75rem;" data-i18n-key="live_title">Live prices</h2>
+      <div class="live-grid">
+        <div class="tile">
+          <div class="tile-header">
+            <div>
+              <div class="tile-title" data-i18n-key="oil">Нафта</div>
+              <div class="tile-meta">WTI</div>
+            </div>
+            <span class="tile-status" id="oilStatus">--</span>
           </div>
-          <span id="oilStatus" style="font-size:0.75rem; color:#6b7280;">--</span>
-        </div>
-        <div style="font-size:2rem; font-weight:700; color:#111827;" id="oilPrice">--</div>
-        <div id="oilChange" style="font-size:0.9rem; color:#6b7280; margin-top:0.25rem;">--</div>
-      </div>
-
-      <div id="goldCard" style="background:#f9fafb; border:1px solid #e5e7eb; border-radius:16px; padding:1.25rem;">
-        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.5rem;">
-          <div>
-            <div style="font-weight:700; font-size:1.1rem; color:#111827;" data-i18n-key="gold">Золото</div>
-            <div style="color:#6b7280; font-size:0.85rem;">XAU/USD</div>
+          <div class="tile-price" id="oilPrice">--</div>
+          <div class="tile-change" id="oilChange">--</div>
+          <div style="height:64px; margin-top:0.75rem;">
+            <svg id="oilSpark" viewBox="0 0 200 64" preserveAspectRatio="none" style="width:100%; height:100%;">
+              <path id="oilLine" fill="none" stroke="#2563eb" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+            </svg>
           </div>
-          <span id="goldStatus" style="font-size:0.75rem; color:#6b7280;">--</span>
         </div>
-        <div style="font-size:2rem; font-weight:700; color:#111827;" id="goldPrice">--</div>
-        <div id="goldChange" style="font-size:0.9rem; color:#6b7280; margin-top:0.25rem;">--</div>
+
+        <div class="tile">
+          <div class="tile-header">
+            <div>
+              <div class="tile-title" data-i18n-key="gold">Золото</div>
+              <div class="tile-meta">XAU/USD</div>
+            </div>
+            <span class="tile-status" id="goldStatus">--</span>
+          </div>
+          <div class="tile-price" id="goldPrice">--</div>
+          <div class="tile-change" id="goldChange">--</div>
+          <div style="height:64px; margin-top:0.75rem;">
+            <svg id="goldSpark" viewBox="0 0 200 64" preserveAspectRatio="none" style="width:100%; height:100%;">
+              <path id="goldLine" fill="none" stroke="#2563eb" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+            </svg>
+          </div>
+        </div>
       </div>
-    </div>
-  </section>
+    </section>
   </div>
 
-  <script>
-    const BASE_PRICES = { oil: 80.28, gold: 4039.00 };
-    let live = { oil: null, gold: null };
-
-    function fmt(n) {
-      if (n === null || Number.isNaN(n)) return '--';
-      return n.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-    }
-
-    async function fetchJSON(url) {
-      try {
-        const res = await fetch(url, { mode: 'cors' });
-        if (!res.ok) return null;
-        return await res.json();
-      } catch (e) {
-        return null;
-      }
-    }
-
-    async function refreshBase() {
-      const [oilData, goldData] = await Promise.all([
-        fetchJSON('https://api.coincap.io/v2/assets/ethereum'),
-        fetchJSON('https://api.coincap.io/v2/assets/bitcoin')
-      ]);
-
-      live.oil = BASE_PRICES.oil + (Math.random() - 0.5) * 2;
-      live.gold = BASE_PRICES.gold + (Math.random() - 0.5) * 20;
-
-      document.getElementById('oilStatus').textContent = 'simulated';
-      document.getElementById('goldStatus').textContent = 'simulated';
-
-      render();
-    }
-
-    function tick() {
-      live.oil += (Math.random() - 0.5) * 0.3;
-      live.gold += (Math.random() - 0.5) * 3;
-      render();
-    }
-
-    function render() {
-      document.getElementById('oilPrice').textContent = fmt(live.oil);
-      document.getElementById('goldPrice').textContent = fmt(live.gold);
-
-      const oilChangeEl = document.getElementById('oilChange');
-      const goldChangeEl = document.getElementById('goldChange');
-      const oilRef = BASE_PRICES.oil;
-      const goldRef = BASE_PRICES.gold;
-
-      const oilDelta = live.oil - oilRef;
-      const goldDelta = live.gold - goldRef;
-
-      oilChangeEl.textContent = `${oilDelta >= 0 ? '+' : ''}${fmt(oilDelta)} (${oilDelta >= 0 ? '+' : ''}${(oilDelta / oilRef * 100).toFixed(2)}%)`;
-      oilChangeEl.style.color = oilDelta >= 0 ? '#16a34a' : '#dc2626';
-
-      goldChangeEl.textContent = `${goldDelta >= 0 ? '+' : ''}${fmt(goldDelta)} (${goldDelta >= 0 ? '+' : ''}${(goldDelta / goldRef * 100).toFixed(2)}%)`;
-      goldChangeEl.style.color = goldDelta >= 0 ? '#16a34a' : '#dc2626';
-    }
-
-    refreshBase();
-    setInterval(tick, 1000);
-    setInterval(refreshBase, 30000);
-  </script>
-
-  <footer style="background: #111827; color: #9ca3af; text-align: center; padding: 2rem; font-size: 0.9rem; margin-top: 3rem;">
+  <footer style="background: #000000; color: #9ca3af; text-align: center; padding: 2rem; font-size: 0.9rem;">
     <p data-i18n-key="footer_desc">Market Snapshot — quick view of stocks, crypto, forex, oil, gold, bonds and indices.</p>
     <p style="margin-top: 0.5rem;">
       <a href="https://github.com/Perry1231" target="_blank" rel="noopener noreferrer" style="color: #60a5fa; text-decoration: none;">GitHub</a>
@@ -325,7 +324,9 @@
         indices: "Indices",
         indices_sub: "S&P 500, Nasdaq, Dow...",
         ai: "AI",
-        ai_sub: "AI indices, companies, news"
+        ai_sub: "AI indices, companies, news",
+        live_title: "Live prices",
+        footer_desc: "Market Snapshot — quick view of stocks, crypto, forex, oil, gold, bonds and indices."
       },
       de: {
         home: "Startseite",
@@ -348,7 +349,9 @@
         indices: "Indizes",
         indices_sub: "S&P 500, Nasdaq, Dow...",
         ai: "KI",
-        ai_sub: "KI-Indizes, Unternehmen, News"
+        ai_sub: "KI-Indizes, Unternehmen, News",
+        live_title: "Livepreise",
+        footer_desc: "Market Snapshot — schneller Überblick über Aktien, Krypto, Forex, Öl, Gold, Anleihen und Indizes."
       },
       fr: {
         home: "Accueil",
@@ -371,7 +374,9 @@
         indices: "Indices",
         indices_sub: "S&P 500, Nasdaq, Dow...",
         ai: "IA",
-        ai_sub: "Indices IA, entreprises, actualités"
+        ai_sub: "Indices IA, entreprises, actualités",
+        live_title: "Cours en direct",
+        footer_desc: "Market Snapshot — vue rapide des actions, crypto, forex, pétrole, or, obligations et indices."
       },
       ja: {
         home: "ホーム",
@@ -392,7 +397,11 @@
         bonds: "債券",
         bonds_sub: "米国債、利回り",
         indices: "指数",
-        indices_sub: "S&P 500、Nasdaq、Dow..."
+        indices_sub: "S&P 500、Nasdaq、Dow...",
+        ai: "AI",
+        ai_sub: "AI指数、企業、ニュース",
+        live_title: "ライブ価格",
+        footer_desc: "Market Snapshot — 株式、暗号通貨、為替、原油、金、債券、指数の概要。"
       }
     };
 
@@ -445,7 +454,71 @@
 
       lastScroll = currentScroll;
     });
-  </script>
 
+    const BASE_PRICES = { oil: 80.28, gold: 4039.00 };
+    const history = {
+      oil: Array.from({ length: 60 }, () => BASE_PRICES.oil + (Math.random() - 0.5) * 2),
+      gold: Array.from({ length: 60 }, () => BASE_PRICES.gold + (Math.random() - 0.5) * 20)
+    };
+    let live = { oil: BASE_PRICES.oil, gold: BASE_PRICES.gold };
+
+    function fmt(n) {
+      if (n === null || Number.isNaN(n)) return '--';
+      return n.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    }
+
+    function sparkPoints(arr) {
+      const min = Math.min(...arr);
+      const max = Math.max(...arr);
+      const range = max - min || 1;
+      return arr.map((v, i) => {
+        const x = (i / (arr.length - 1)) * 200;
+        const y = 64 - ((v - min) / range) * 64;
+        return `${x},${y}`;
+      }).join(' ');
+    }
+
+    function renderSparkline(id, arr, color) {
+      const path = document.getElementById(id);
+      if (!path) return;
+      path.setAttribute('d', `M ${sparkPoints(arr)}`);
+      path.setAttribute('stroke', color);
+    }
+
+    function tick() {
+      live.oil += (Math.random() - 0.5) * 0.3;
+      live.gold += (Math.random() - 0.5) * 3;
+
+      history.oil.push(live.oil);
+      history.gold.push(live.gold);
+      if (history.oil.length > 120) history.oil.shift();
+      if (history.gold.length > 120) history.gold.shift();
+
+      render();
+    }
+
+    function render() {
+      document.getElementById('oilPrice').textContent = fmt(live.oil);
+      document.getElementById('goldPrice').textContent = fmt(live.gold);
+
+      const oilChangeEl = document.getElementById('oilChange');
+      const goldChangeEl = document.getElementById('goldChange');
+
+      const oilDelta = live.oil - BASE_PRICES.oil;
+      const goldDelta = live.gold - BASE_PRICES.gold;
+
+      oilChangeEl.textContent = `${oilDelta >= 0 ? '+' : ''}${fmt(oilDelta)} (${oilDelta >= 0 ? '+' : ''}${(oilDelta / BASE_PRICES.oil * 100).toFixed(2)}%)`;
+      oilChangeEl.style.color = oilDelta >= 0 ? '#16a34a' : '#dc2626';
+
+      goldChangeEl.textContent = `${goldDelta >= 0 ? '+' : ''}${fmt(goldDelta)} (${goldDelta >= 0 ? '+' : ''}${(goldDelta / BASE_PRICES.gold * 100).toFixed(2)}%)`;
+      goldChangeEl.style.color = goldDelta >= 0 ? '#16a34a' : '#dc2626';
+
+      renderSparkline('oilLine', history.oil, oilDelta >= 0 ? '#16a34a' : '#dc2626');
+      renderSparkline('goldLine', history.gold, goldDelta >= 0 ? '#16a34a' : '#dc2626');
+    }
+
+    tick();
+    setInterval(tick, 1000);
+  </script>
 </body>
 </html>
