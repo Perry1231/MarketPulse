@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <title>Stocks - Market Snapshot</title>
+  <style>
+    * { margin: 0; padding: 0; }
+    body {
+      background: #ffffff;
+      font-family: Arial, sans-serif;
+      color: #111827;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .nav {
+      position: fixed;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%) rotateX(0deg);
+      width: 70%;
+      max-width: 800px;
+      height: 60px;
+      background: #000000;
+      border-radius: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 1.5rem;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+      transition: transform 0.5s ease, opacity 0.3s ease;
+      z-index: 1000;
+    }
+
+    .nav.hidden {
+      transform: translateX(-50%) rotateX(180deg);
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .nav a {
+      color: #fff;
+      text-decoration: none;
+      font-size: 1rem;
+      font-weight: 500;
+      padding: 0.5rem 1rem;
+      border-radius: 20px;
+      transition: background 0.2s;
+    }
+
+    .nav a:hover {
+      background: rgba(255,255,255,0.1);
+    }
+
+    .nav a.active {
+      background: #2563eb;
+      color: #fff;
+    }
+
+    .lang-switcher {
+      position: relative;
+    }
+
+    .lang-btn {
+      background: rgba(255,255,255,0.1);
+      border: none;
+      color: #fff;
+      padding: 0.4rem 0.8rem;
+      border-radius: 20px;
+      cursor: pointer;
+      font-size: 0.9rem;
+    }
+
+    .lang-dropdown {
+      display: none;
+      position: absolute;
+      top: 110%;
+      right: 0;
+      background: #1f2937;
+      border-radius: 12px;
+      overflow: hidden;
+      min-width: 140px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+    }
+
+    .lang-dropdown.show {
+      display: block;
+    }
+
+    .lang-dropdown a {
+      display: block;
+      padding: 0.6rem 1rem;
+      color: #fff;
+      text-decoration: none;
+      font-size: 0.9rem;
+    }
+
+    .lang-dropdown a:hover {
+      background: #374151;
+    }
+
+    .containers {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 1.5rem;
+      padding: 140px 2rem 20px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .stock-card {
+      background: #f9fafb;
+      border: 1px solid #e5e7eb;
+      border-radius: 16px;
+      padding: 1.25rem;
+      transition: box-shadow 0.2s, transform 0.15s, border-color 0.2s;
+      cursor: pointer;
+      text-decoration: none;
+      color: inherit;
+      display: block;
+    }
+
+    .stock-card:hover {
+      border-color: #2563eb;
+      box-shadow: 0 10px 25px rgba(37, 99, 235, 0.12);
+      transform: translateY(-2px);
+    }
+
+    .stock-card__symbol {
+      font-weight: 700;
+      font-size: 1.1rem;
+      color: #111827;
+    }
+
+    .stock-card__name {
+      color: #6b7280;
+      font-size: 0.85rem;
+      margin-top: 0.25rem;
+    }
+
+    .stock-price {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 1rem;
+    }
+
+    .price {
+      font-size: 1.4rem;
+      font-weight: 600;
+    }
+
+    .change {
+      font-size: 0.9rem;
+      color: #6b7280;
+    }
+  </style>
+</head>
+<body>
+  <nav class="nav" id="nav">
+    <a href="index.html" data-i18n-key="home">Home</a>
+    <a href="about.html" data-i18n-key="about">About</a>
+    <a href="services.html" data-i18n-key="services">Services</a>
+    <a href="account.html" data-i18n-key="account">Account</a>
+    <div class="lang-switcher">
+      <button class="lang-btn" id="langBtn" data-i18n-key="lang">🌐 EN</button>
+      <div class="lang-dropdown" id="langDropdown">
+        <a href="#" data-lang="en">English</a>
+        <a href="#" data-lang="de">Deutsch</a>
+        <a href="#" data-lang="fr">Français</a>
+        <a href="#" data-lang="ja">日本語</a>
+      </div>
+    </div>
+  </nav>
+
+  <div style="flex: 1;">
+    <section class="containers">
+      <a class="stock-card" href="apple.html">
+        <div class="stock-card__symbol">AAPL</div>
+        <div class="stock-card__name">Apple Inc.</div>
+        <div class="stock-price">
+          <div class="price" id="price-aapl">--</div>
+          <div class="change" id="change-aapl">--</div>
+        </div>
+      </a>
+
+      <a class="stock-card" href="microsoft.html">
+        <div class="stock-card__symbol">MSFT</div>
+        <div class="stock-card__name">Microsoft Corporation</div>
+        <div class="stock-price">
+          <div class="price" id="price-msft">--</div>
+          <div class="change" id="change-msft">--</div>
+        </div>
+      </a>
+
+      <a class="stock-card" href="google.html">
+        <div class="stock-card__symbol">GOOGL</div>
+        <div class="stock-card__name">Alphabet Inc.</div>
+        <div class="stock-price">
+          <div class="price" id="price-goog">--</div>
+          <div class="change" id="change-goog">--</div>
+        </div>
+      </a>
+
+      <a class="stock-card" href="amazon.html">
+        <div class="stock-card__symbol">AMZN</div>
+        <div class="stock-card__name">Amazon.com Inc.</div>
+        <div class="stock-price">
+          <div class="price" id="price-amzn">--</div>
+          <div class="change" id="change-amzn">--</div>
+        </div>
+      </a>
+
+      <a class="stock-card" href="tesla.html">
+        <div class="stock-card__symbol">TSLA</div>
+        <div class="stock-card__name">Tesla Inc.</div>
+        <div class="stock-price">
+          <div class="price" id="price-tsla">--</div>
+          <div class="change" id="change-tsla">--</div>
+        </div>
+      </a>
+
+      <a class="stock-card" href="meta.html">
+        <div class="stock-card__symbol">META</div>
+        <div class="stock-card__name">Meta Platforms, Inc.</div>
+        <div class="stock-price">
+          <div class="price" id="price-meta">--</div>
+          <div class="change" id="change-meta">--</div>
+        </div>
+      </a>
+
+      <a class="stock-card" href="nvidia.html">
+        <div class="stock-card__symbol">NVDA</div>
+        <div class="stock-card__name">NVIDIA Corporation</div>
+        <div class="stock-price">
+          <div class="price" id="price-nvda">--</div>
+          <div class="change" id="change-nvda">--</div>
+        </div>
+      </a>
+
+      <a class="stock-card" href="netflix.html">
+        <div class="stock-card__symbol">NFLX</div>
+        <div class="stock-card__name">Netflix, Inc.</div>
+        <div class="stock-price">
+          <div class="price" id="price-nflx">--</div>
+          <div class="change" id="change-nflx">--</div>
+        </div>
+      </a>
+
+      <a class="stock-card" href="brent.html">
+        <div class="stock-card__symbol">BRENT</div>
+        <div class="stock-card__name">Brent Crude Oil</div>
+        <div class="stock-price">
+          <div class="price" id="price-brent">--</div>
+          <div class="change" id="change-brent">--</div>
+        </div>
+      </a>
+
+      <a class="stock-card" href="wti.html">
+        <div class="stock-card__symbol">WTI</div>
+        <div class="stock-card__name">WTI Crude Oil</div>
+        <div class="stock-price">
+          <div class="price" id="price-wti">--</div>
+          <div class="change" id="change-wti">--</div>
+        </div>
+      </a>
+
+      <a class="stock-card" href="gold.html">
+        <div class="stock-card__symbol">XAU</div>
+        <div class="stock-card__name">Gold Futures</div>
+        <div class="stock-price">
+          <div class="price" id="price-gold">--</div>
+          <div class="change" id="change-gold">--</div>
+        </div>
+      </a>
+
+      <a class="stock-card" href="silver.html">
+        <div class="stock-card__symbol">XAG</div>
+        <div class="stock-card__name">Silver Futures</div>
+        <div class="stock-price">
+          <div class="price" id="price-silver">--</div>
+          <div class="change" id="change-silver">--</div>
+        </div>
+      </a>
+    </section>
+  </div>
+
+  <footer style="background: #000000; color: #9ca3af; text-align: center; padding: 2rem; font-size: 0.9rem; margin-top: auto;">
+    <p data-i18n-key="footer_desc">Market Snapshot — quick view of stocks, crypto, forex, oil, gold, bonds and indices.</p>
+    <p style="margin-top: 0.5rem;">
+      <a href="https://github.com/Perry1231" target="_blank" rel="noopener noreferrer" style="color: #60a5fa; text-decoration: none;">GitHub</a>
+    </p>
+  </footer>
+
+  <script>
+    const translations = {
+      en: {
+        home: "Home",
+        about: "About",
+        services: "Services",
+        account: "Account",
+        lang: "🌐 EN",
+        footer_desc: "Market Snapshot — quick view of stocks, crypto, forex, oil, gold, bonds and indices."
+      },
+      de: {
+        home: "Startseite",
+        about: "Über uns",
+        services: "Dienstleistungen",
+        account: "Konto",
+        lang: "🌐 DE",
+        footer_desc: "Market Snapshot — schneller Überblick über Aktien, Krypto, Forex, Öl, Gold, Anleihen und Indizes."
+      },
+      fr: {
+        home: "Accueil",
+        about: "À propos",
+        services: "Services",
+        account: "Compte",
+        lang: "🌐 FR",
+        footer_desc: "Market Snapshot — vue rapide des actions, crypto, forex, pétrole, or, obligations et indices."
+      },
+      ja: {
+        home: "ホーム",
+        about: "概要",
+        services: "サービス",
+        account: "アカウント",
+        lang: "🌐 JA",
+        footer_desc: "Market Snapshot — 株式、暗号通貨、為替、原油、金、債券、指数の概要。"
+      }
+    };
+
+    function applyLanguage(lang) {
+      document.documentElement.lang = lang;
+      document.querySelectorAll('[data-i18n-key]').forEach(el => {
+        const key = el.getAttribute('data-i18n-key');
+        if (translations[lang] && translations[lang][key]) {
+          el.textContent = translations[lang][key];
+        }
+      });
+      localStorage.setItem('lang', lang);
+    }
+
+    const savedLang = localStorage.getItem('lang') || 'en';
+    applyLanguage(savedLang);
+
+    const langBtn = document.getElementById('langBtn');
+    const langDropdown = document.getElementById('langDropdown');
+
+    langBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      langDropdown.classList.toggle('show');
+    });
+
+    document.querySelectorAll('#langDropdown a').forEach(link => {
+      link.addEventListener('click', (e) => {
+        e.preventDefault();
+        const lang = link.getAttribute('data-lang');
+        applyLanguage(lang);
+        langDropdown.classList.remove('show');
+      });
+    });
+
+    document.addEventListener('click', () => {
+      langDropdown.classList.remove('show');
+    });
+
+    let lastScroll = 0;
+    const nav = document.getElementById('nav');
+
+    window.addEventListener('scroll', () => {
+      const currentScroll = window.pageYOffset;
+
+      if (currentScroll > lastScroll && currentScroll > 100) {
+        nav.classList.add('hidden');
+      } else {
+        nav.classList.remove('hidden');
+      }
+
+      lastScroll = currentScroll;
+    });
+
+    const stockPrices = {
+      aapl: 178.42,
+      msft: 374.82,
+      goog: 141.90,
+      amzn: 178.25,
+      tsla: 248.50,
+      meta: 505.75,
+      nvda: 875.28,
+      nflx: 628.30
+    };
+
+    let live = { ...stockPrices };
+
+    function fmt(n) {
+      if (n === null || Number.isNaN(n)) return '--';
+      return n.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    }
+
+    function tick() {
+      Object.keys(live).forEach(stock => {
+        live[stock] += (Math.random() - 0.5) * 2;
+      });
+      render();
+    }
+
+    function render() {
+      ['aapl', 'msft', 'goog', 'amzn', 'tsla', 'meta', 'nvda', 'nflx'].forEach(stock => {
+        const priceEl = document.getElementById(`price-${stock}`);
+        const changeEl = document.getElementById(`change-${stock}`);
+        
+        if (priceEl && changeEl) {
+          priceEl.textContent = fmt(live[stock]);
+          const delta = live[stock] - stockPrices[stock];
+          const color = delta >= 0 ? '#16a34a' : '#dc2626';
+          changeEl.textContent = `${delta >= 0 ? '+' : ''}${fmt(delta)} (${delta >= 0 ? '+' : ''}${(delta / stockPrices[stock] * 100).toFixed(2)}%)`;
+          changeEl.style.color = color;
+        }
+      });
+    }
+
+    tick();
+    setInterval(tick, 1000);
+  </script>
+</body>
+</html>
