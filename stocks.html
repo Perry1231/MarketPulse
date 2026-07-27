@@ -100,13 +100,56 @@
       background: #374151;
     }
 
-    .containers {
+    .container {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
       gap: 1.5rem;
       padding: 140px 2rem 20px;
       max-width: 1200px;
       margin: 0 auto;
+    }
+
+    .filter-bar {
+      max-width: 1200px;
+      margin: 100px auto 2rem;
+      padding: 0 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .filter-title {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #111827;
+    }
+
+    .filter-buttons {
+      display: flex;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+    }
+
+    .filter-btn {
+      background: #f3f4f6;
+      border: 2px solid transparent;
+      padding: 0.5rem 1.25rem;
+      border-radius: 20px;
+      font-size: 0.9rem;
+      font-weight: 500;
+      color: #6b7280;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .filter-btn:hover {
+      background: #e5e7eb;
+    }
+
+    .filter-btn.active {
+      background: #2563eb;
+      color: #fff;
+      border-color: #2563eb;
     }
 
     .stock-card {
@@ -127,6 +170,10 @@
       transform: translateY(-2px);
     }
 
+    .stock-card.hidden {
+      display: none;
+    }
+
     .stock-card__symbol {
       font-weight: 700;
       font-size: 1.1rem;
@@ -137,6 +184,14 @@
       color: #6b7280;
       font-size: 0.85rem;
       margin-top: 0.25rem;
+    }
+
+    .stock-card__category {
+      color: #2563eb;
+      font-size: 0.7rem;
+      font-weight: 600;
+      margin-top: 0.5rem;
+      text-transform: uppercase;
     }
 
     .stock-price {
@@ -155,6 +210,167 @@
       font-size: 0.9rem;
       color: #6b7280;
     }
+
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: 2000;
+      justify-content: center;
+      align-items: center;
+      padding: 2rem;
+    }
+
+    .modal-overlay.visible {
+      display: flex;
+    }
+
+    .modal-content {
+      background: #fff;
+      border-radius: 20px;
+      width: 90%;
+      max-width: 1100px;
+      max-height: 90vh;
+      overflow: hidden;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+      animation: modalSlideIn 0.3s ease;
+    }
+
+    @keyframes modalSlideIn {
+      from {
+        opacity: 0;
+        transform: translateY(-20px) scale(0.95);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+
+    .modal-header {
+      padding: 1.25rem 2rem;
+      background: #f9fafb;
+      border-bottom: 1px solid #e5e7eb;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .modal-title {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #111827;
+    }
+
+    .modal-close {
+      background: none;
+      border: none;
+      font-size: 2rem;
+      color: #6b7280;
+      cursor: pointer;
+      line-height: 1;
+      padding: 0.25rem 0.5rem;
+      transition: color 0.2s;
+    }
+
+    .modal-close:hover {
+      color: #dc2626;
+    }
+
+    .modal-body {
+      padding: 1.5rem 2rem;
+      overflow-y: auto;
+    }
+
+    .data-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .data-table th,
+    .data-table td {
+      text-align: left;
+      padding: 1rem;
+      border-bottom: 1px solid #e5e7eb;
+    }
+
+    .data-table th {
+      background: #f3f4f6;
+      font-weight: 600;
+      color: #6b7280;
+      font-size: 0.9rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .data-table tbody tr:hover {
+      background: #f9fafb;
+    }
+
+    .data-table tbody tr:last-child td {
+      border-bottom: none;
+    }
+
+    .data-value {
+      font-weight: 600;
+    }
+
+    .positive {
+      color: #16a34a;
+    }
+
+    .negative {
+      color: #dc2626;
+    }
+
+    .sparkline {
+      display: inline-block;
+      width: 100px;
+      height: 40px;
+    }
+
+.filter-toggle {
+      background: #2563eb;
+      border: none;
+      color: #fff;
+      padding: 0.75rem 1.5rem;
+      border-radius: 12px;
+      cursor: pointer;
+      font-size: 0.95rem;
+      font-weight: 500;
+      transition: background 0.2s;
+    }
+
+    .filter-toggle:hover {
+      background: #1d4ed8;
+    }
+
+    .loading {
+      text-align: center;
+      padding: 3rem;
+      color: #6b7280;
+    }
+
+    .refresh-btn {
+      background: #10b981;
+      border: none;
+      color: #fff;
+      padding: 0.5rem 1rem;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 0.85rem;
+      margin-left: 1rem;
+      transition: background 0.2s;
+    }
+
+    .refresh-btn:hover {
+      background: #059669;
+    }
+
   </style>
 </head>
 <body>
@@ -175,115 +391,269 @@
   </nav>
 
   <div style="flex: 1;">
-    <section class="containers">
-      <a class="stock-card" href="apple.html">
+    <div class="filter-bar">
+      <div style="display: flex; align-items: center;">
+        <div class="filter-title">Stocks</div>
+        <button class="refresh-btn" id="refreshBtn">
+          ↻
+        </button>
+      </div>
+      <div class="filter-buttons">
+        <button class="filter-btn active" data-category="all">All</button>
+        <button class="filter-btn" data-category="tech">Tech</button>
+        <button class="filter-btn" data-category="retail">Retail</button>
+        <button class="filter-btn" data-category="energy">Energy</button>
+        <button class="filter-btn" data-category="metals">Metals</button>
+      </div>
+    </div>
+
+    <section class="container">
+      <a class="stock-card" href="apple.html" data-category="tech">
         <div class="stock-card__symbol">AAPL</div>
         <div class="stock-card__name">Apple Inc.</div>
+        <div class="stock-card__category">Technology</div>
         <div class="stock-price">
           <div class="price" id="price-aapl">--</div>
           <div class="change" id="change-aapl">--</div>
         </div>
       </a>
 
-      <a class="stock-card" href="microsoft.html">
+      <a class="stock-card" href="microsoft.html" data-category="tech">
         <div class="stock-card__symbol">MSFT</div>
         <div class="stock-card__name">Microsoft Corporation</div>
+        <div class="stock-card__category">Technology</div>
         <div class="stock-price">
           <div class="price" id="price-msft">--</div>
           <div class="change" id="change-msft">--</div>
         </div>
       </a>
 
-      <a class="stock-card" href="google.html">
+      <a class="stock-card" href="google.html" data-category="tech">
         <div class="stock-card__symbol">GOOGL</div>
         <div class="stock-card__name">Alphabet Inc.</div>
+        <div class="stock-card__category">Technology</div>
         <div class="stock-price">
           <div class="price" id="price-goog">--</div>
           <div class="change" id="change-goog">--</div>
         </div>
       </a>
 
-      <a class="stock-card" href="amazon.html">
+      <a class="stock-card" href="amazon.html" data-category="retail">
         <div class="stock-card__symbol">AMZN</div>
         <div class="stock-card__name">Amazon.com Inc.</div>
+        <div class="stock-card__category">Retail/E-Commerce</div>
         <div class="stock-price">
           <div class="price" id="price-amzn">--</div>
           <div class="change" id="change-amzn">--</div>
         </div>
       </a>
 
-      <a class="stock-card" href="tesla.html">
+      <a class="stock-card" href="tesla.html" data-category="tech">
         <div class="stock-card__symbol">TSLA</div>
         <div class="stock-card__name">Tesla Inc.</div>
+        <div class="stock-card__category">Electric Vehicles</div>
         <div class="stock-price">
           <div class="price" id="price-tsla">--</div>
           <div class="change" id="change-tsla">--</div>
         </div>
       </a>
 
-      <a class="stock-card" href="meta.html">
+      <a class="stock-card" href="meta.html" data-category="tech">
         <div class="stock-card__symbol">META</div>
         <div class="stock-card__name">Meta Platforms, Inc.</div>
+        <div class="stock-card__category">Social Media</div>
         <div class="stock-price">
           <div class="price" id="price-meta">--</div>
           <div class="change" id="change-meta">--</div>
         </div>
       </a>
 
-      <a class="stock-card" href="nvidia.html">
+      <a class="stock-card" href="nvidia.html" data-category="tech">
         <div class="stock-card__symbol">NVDA</div>
         <div class="stock-card__name">NVIDIA Corporation</div>
+        <div class="stock-card__category">Semiconductors</div>
         <div class="stock-price">
           <div class="price" id="price-nvda">--</div>
           <div class="change" id="change-nvda">--</div>
         </div>
       </a>
 
-      <a class="stock-card" href="netflix.html">
+      <a class="stock-card" href="netflix.html" data-category="tech">
         <div class="stock-card__symbol">NFLX</div>
         <div class="stock-card__name">Netflix, Inc.</div>
+        <div class="stock-card__category">Media Streaming</div>
         <div class="stock-price">
           <div class="price" id="price-nflx">--</div>
           <div class="change" id="change-nflx">--</div>
         </div>
       </a>
 
-      <a class="stock-card" href="brent.html">
+      <a class="stock-card" href="brent.html" data-category="energy">
         <div class="stock-card__symbol">BRENT</div>
         <div class="stock-card__name">Brent Crude Oil</div>
+        <div class="stock-card__category">Oil & Energy</div>
         <div class="stock-price">
           <div class="price" id="price-brent">--</div>
           <div class="change" id="change-brent">--</div>
         </div>
       </a>
 
-      <a class="stock-card" href="wti.html">
+      <a class="stock-card" href="wti.html" data-category="energy">
         <div class="stock-card__symbol">WTI</div>
         <div class="stock-card__name">WTI Crude Oil</div>
+        <div class="stock-card__category">Oil & Energy</div>
         <div class="stock-price">
           <div class="price" id="price-wti">--</div>
           <div class="change" id="change-wti">--</div>
         </div>
       </a>
 
-      <a class="stock-card" href="gold.html">
+      <a class="stock-card" href="gold.html" data-category="metals">
         <div class="stock-card__symbol">XAU</div>
         <div class="stock-card__name">Gold Futures</div>
+        <div class="stock-card__category">Precious Metals</div>
         <div class="stock-price">
           <div class="price" id="price-gold">--</div>
           <div class="change" id="change-gold">--</div>
         </div>
       </a>
 
-      <a class="stock-card" href="silver.html">
+      <a class="stock-card" href="silver.html" data-category="metals">
         <div class="stock-card__symbol">XAG</div>
         <div class="stock-card__name">Silver Futures</div>
+        <div class="stock-card__category">Precious Metals</div>
         <div class="stock-price">
           <div class="price" id="price-silver">--</div>
           <div class="change" id="change-silver">--</div>
         </div>
       </a>
+
+      <a class="stock-card" href="disney.html" data-category="retail">
+        <div class="stock-card__symbol">DIS</div>
+        <div class="stock-card__name">The Walt Disney Company</div>
+        <div class="stock-card__category">Media Entertainment</div>
+        <div class="stock-price">
+          <div class="price" id="price-dis">--</div>
+          <div class="change" id="change-dis">--</div>
+        </div>
+      </a>
+
+      <a class="stock-card" href="nike.html" data-category="retail">
+        <div class="stock-card__symbol">NKE</div>
+        <div class="stock-card__name">Nike, Inc.</div>
+        <div class="stock-card__category">Apparel</div>
+        <div class="stock-price">
+          <div class="price" id="price-nke">--</div>
+          <div class="change" id="change-nke">--</div>
+        </div>
+      </a>
+
+      <a class="stock-card" href="adobe.html" data-category="tech">
+        <div class="stock-card__symbol">ADBE</div>
+        <div class="stock-card__name">Adobe Inc.</div>
+        <div class="stock-card__category">Software</div>
+        <div class="stock-price">
+          <div class="price" id="price-adb">--</div>
+          <div class="change" id="change-adb">--</div>
+        </div>
+      </a>
+
+      <a class="stock-card" href="qualcomm.html" data-category="tech">
+        <div class="stock-card__symbol">QCOM</div>
+        <div class="stock-card__name">Qualcomm Incorporated</div>
+        <div class="stock-card__category">Semiconductors</div>
+        <div class="stock-price">
+          <div class="price" id="price-qco">--</div>
+          <div class="change" id="change-qco">--</div>
+        </div>
+      </a>
+
+      <a class="stock-card" href="paypal.html" data-category="tech">
+        <div class="stock-card__symbol">PYPL</div>
+        <div class="stock-card__name">PayPal Holdings, Inc.</div>
+        <div class="stock-card__category">Fintech</div>
+        <div class="stock-price">
+          <div class="price" id="price-pyp">--</div>
+          <div class="change" id="change-pyp">--</div>
+        </div>
+      </a>
+
+      <a class="stock-card" href="intel.html" data-category="tech">
+        <div class="stock-card__symbol">INTC</div>
+        <div class="stock-card__name">Intel Corporation</div>
+        <div class="stock-card__category">Semiconductors</div>
+        <div class="stock-price">
+          <div class="price" id="price-int">--</div>
+          <div class="change" id="change-int">--</div>
+        </div>
+      </a>
+
+      <a class="stock-card" href="costco.html" data-category="retail">
+        <div class="stock-card__symbol">COST</div>
+        <div class="stock-card__name">Costco Wholesale</div>
+        <div class="stock-card__category">Retail</div>
+        <div class="stock-price">
+          <div class="price" id="price-cos">--</div>
+          <div class="change" id="change-cos">--</div>
+        </div>
+      </a>
+
+      <a class="stock-card" href="verizon.html" data-category="energy">
+        <div class="stock-card__symbol">VZ</div>
+        <div class="stock-card__name">Verizon Communications</div>
+        <div class="stock-card__category">Telecommunications</div>
+        <div class="stock-price">
+          <div class="price" id="price-ver">--</div>
+          <div class="change" id="change-ver">--</div>
+        </div>
+      </a>
+
+      <a class="stock-card" href="asml.html" data-category="tech">
+        <div class="stock-card__symbol">ASML</div>
+        <div class="stock-card__name">ASML Holding</div>
+        <div class="stock-card__category">Semiconductors</div>
+        <div class="stock-price">
+          <div class="price" id="price-asml">--</div>
+          <div class="change" id="change-asml">--</div>
+        </div>
+      </a>
+
+      <a class="stock-card" href="uber.html" data-category="tech">
+        <div class="stock-card__symbol">UBER</div>
+        <div class="stock-card__name">Uber Technologies</div>
+        <div class="stock-card__category"> Transportation</div>
+        <div class="stock-price">
+          <div class="price" id="price-uber">--</div>
+          <div class="change" id="change-uber">--</div>
+        </div>
+      </a>
     </section>
+  </div>
+
+  <div class="modal-overlay" id="modalOverlay">
+    <div class="modal-content">
+      <div class="modal-header">
+        <div class="modal-title" id="modalTitle">Stock Data</div>
+        <button class="modal-close" id="modalClose">×</button>
+      </div>
+      <div class="modal-body">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Symbol</th>
+              <th>Company</th>
+              <th>Price</th>
+              <th>Change%</th>
+              <th>High</th>
+              <th>Low</th>
+              <th>Volume</th>
+            </tr>
+          </thead>
+          <tbody id="dataTableBody">
+          </tbody>
+        </table>
+      </div>
+    </div>
   </div>
 
   <footer style="background: #000000; color: #9ca3af; text-align: center; padding: 2rem; font-size: 0.9rem; margin-top: auto;">
@@ -301,7 +671,9 @@
         services: "Services",
         account: "Account",
         lang: "🌐 EN",
-        footer_desc: "Market Snapshot — quick view of stocks, crypto, forex, oil, gold, bonds and indices."
+        footer_desc: "Market Snapshot — quick view of stocks, crypto, forex, oil, gold, bonds and indices.",
+        total_market_cap: "Total Market Cap",
+        filtered_stocks_count: "Showing {count} stocks"
       },
       de: {
         home: "Startseite",
@@ -309,7 +681,9 @@
         services: "Dienstleistungen",
         account: "Konto",
         lang: "🌐 DE",
-        footer_desc: "Market Snapshot — schneller Überblick über Aktien, Krypto, Forex, Öl, Gold, Anleihen und Indizes."
+        footer_desc: "Market Snapshot — schneller Überblick über Aktien, Krypto, Forex, Öl, Gold, Anleihen und Indizes.",
+        total_market_cap: "Gesamtkapitalisierung",
+        filtered_stocks_count: "{count} Aktien angezeigt"
       },
       fr: {
         home: "Accueil",
@@ -317,7 +691,9 @@
         services: "Services",
         account: "Compte",
         lang: "🌐 FR",
-        footer_desc: "Market Snapshot — vue rapide des actions, crypto, forex, pétrole, or, obligations et indices."
+        footer_desc: "Market Snapshot — vue rapide des actions, crypto, forex, pétrole, or, obligations et indices.",
+        total_market_cap: "Capacité de marché totale",
+        filtered_stocks_count: "{count} actions affichées"
       },
       ja: {
         home: "ホーム",
@@ -325,7 +701,9 @@
         services: "サービス",
         account: "アカウント",
         lang: "🌐 JA",
-        footer_desc: "Market Snapshot — 株式、暗号通貨、為替、原油、金、債券、指数の概要。"
+        footer_desc: "Market Snapshot — 株式、暗号通貨、為替、原油、金、債券、指数の概要。",
+        total_market_cap: "総市場株式",
+        filtered_stocks_count: "{count}株式表示中"
       }
     };
 
