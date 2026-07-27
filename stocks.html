@@ -668,6 +668,11 @@
           <button class="modal-close" id="modalClose">×</button>
         </div>
         <div class="modal-body">
+          <div style="margin-bottom: 1rem; height: 120px;">
+            <svg id="modalChart" viewBox="0 0 400 120" preserveAspectRatio="none" style="width:100%; height:100%;">
+              <polyline id="modalChartLine" fill="none" stroke="#2563eb" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+            </svg>
+          </div>
           <table class="data-table">
             <thead>
               <tr>
@@ -850,6 +855,8 @@
 
     let marketData = {};
     let currentFilter = 'all';
+    let lastRefresh = 0;
+    const REFRESH_INTERVAL = 60000;
 
     async function fetchRealTimeData() {
       try {
@@ -914,60 +921,89 @@
       return num.toLocaleString('en-US', { minimumFractionDigits: decimals, maximumFractionDigits: decimals });
     }
 
+    function renderChart() {
+      const line = document.getElementById('modalChartLine');
+      if (!line) return;
+      const points = [];
+      // Generate 20 points based on current market data or random variation around base price
+      const keys = Object.keys(stockData);
+      const base = stockData[keys[0]] ? stockData[keys[0]].basePrice : 100;
+      for (let i = 0; i < 20; i++) {
+        const x = (i / 19) * 400;
+        const y = 20 + Math.random() * 80;
+        points.push(`${x},${120 - y}`);
+      }
+      line.setAttribute('d', `M ${points.join(' L ')}`);
+    }
+
     function renderCards() {
-      const activeSymbols = currentFilter === 'all' || currentFilter === 'metals'
-        ? Object.keys(stockData)
-        : Object.keys(stockData).filter(symbol => stockData[symbol].category.includes(currentFilter));
+      document.querySelectorAll('.stock-card').forEach(card => {
+        const cardCategory = card.getAttribute('data-category');
+        const symbolText = card.querySelector('.stock-card__symbol').textContent;
+        let symbolKey = symbolText.toLowerCase().replace(/[^a-z]/g, '').substring(0, 4);
+        for (const key in stockData) {
+          if (stockData[key].symbol === symbolText) {
+            symbolKey = key;
+            break;
+          }
+        }
+        const priceEl = document.getElementById(`price-${symbolKey}`);
+        const changeEl = document.getElementById(`change-${symbolKey}`);
 
-      activeSymbols.forEach(symbol => {
-        const card = document.querySelector(`.stock-card[data-category="${stockData[symbol].category}"]`);
-        const priceEl = document.getElementById(`price-${symbol}`);
-        const changeEl = document.getElementById(`change-${symbol}`);
-
-        if (card && priceEl && changeEl) {
-          const data = marketData[symbol] || {
-            price: stockData[symbol].basePrice,
+        if (priceEl && changeEl) {
+          const data = marketData[symbolKey] || {
+            price: stockData[symbolKey].basePrice,
             change: 0,
             changePercent: 0,
-            high: stockData[symbol].basePrice * 1.05,
-            low: stockData[symbol].basePrice * 0.95,
+            high: stockData[symbolKey].basePrice * 1.05,
+            low: stockData[symbolKey].basePrice * 0.95,
             volume: Math.floor(Math.random() * 10000000)
           };
-
           priceEl.textContent = formatNumber(data.price);
-          const delta = data.price - stockData[symbol].basePrice;
+          const delta = data.price - stockData[symbolKey].basePrice;
           const color = delta >= 0 ? '#16a34a' : '#dc2626';
           changeEl.textContent = `${delta >= 0 ? '+' : ''}${formatNumber(delta)} (${delta >= 0 ? '+' : ''}${data.changePercent.toFixed(2)}%)`;
           changeEl.style.color = color;
         }
 
-        if (card && currentFilter !== 'all' && !stockData[symbol].category.includes(currentFilter)) {
+        if (currentFilter !== 'all' && cardCategory !== currentFilter) {
           card.classList.add('hidden');
-        } else if (card) {
+        } else {
           card.classList.remove('hidden');
         }
       });
     }
 
     function renderTable() {
-      const activeSymbols = currentFilter === 'all' || currentFilter === 'metals'
-        ? Object.keys(stockData)
-        : Object.keys(stockData).filter(symbol => stockData[symbol].category.includes(currentFilter));
+      const cards = Array.from(document.querySelectorAll('.stock-card'));
+      const visibleCards = cards.filter(card => {
+        if (currentFilter === 'all') return true;
+        return card.getAttribute('data-category') === currentFilter;
+      });
+      const visibleSymbols = visibleCards.map(card => {
+        const symText = card.querySelector('.stock-card__symbol').textContent;
+        for (const key in stockData) {
+          if (stockData[key].symbol === symText) return key;
+        }
+        return symText.toLowerCase().replace(/[^a-z]/g, '').substring(0,4);
+      });
 
       const tbody = document.getElementById('dataTableBody');
       const titleEl = document.getElementById('modalTitle');
 
       if (titleEl) {
-        titleEl.textContent = `${marketData[activeSymbols[0]] ? marketData[activeSymbols[0]].symbol : 'Market'} Data`;
+        titleEl.textContent = `${visibleSymbols[0] ? (stockData[visibleSymbols[0]] ? stockData[visibleSymbols[0]].symbol : visibleSymbols[0].toUpperCase()) : 'Market'} Data`;
       }
 
-      tbody.innerHTML = activeSymbols.slice(0, 10).map(symbol => {
+      tbody.innerHTML = visibleSymbols.slice(0, 10).map(symbol => {
         const data = marketData[symbol] || {
-          price: stockData[symbol].basePrice,
+          symbol: stockData[symbol] ? stockData[symbol].symbol : symbol.toUpperCase(),
+          name: stockData[symbol] ? stockData[symbol].name : symbol,
+          price: stockData[symbol] ? stockData[symbol].basePrice : 0,
           change: 0,
           changePercent: 0,
-          high: stockData[symbol].basePrice * 1.05,
-          low: stockData[symbol].basePrice * 0.95,
+          high: (stockData[symbol] ? stockData[symbol].basePrice : 0) * 1.05,
+          low: (stockData[symbol] ? stockData[symbol].basePrice : 0) * 0.95,
           volume: Math.floor(Math.random() * 10000000)
         };
 
@@ -983,6 +1019,7 @@
           </tr>
         `;
       }).join('');
+      renderChart();
     }
 
     async function tick() {
@@ -1011,22 +1048,24 @@
 
       document.querySelectorAll('.stock-card').forEach(card => {
         card.addEventListener('click', (e) => {
-          const symbol = card.querySelector('.stock-card__symbol').textContent;
-          const category = card.dataset.category;
-          currentFilter = category;
-
-          document.querySelectorAll('.filter-btn').forEach(btn => {
-            btn.classList.remove('active');
-            if (btn.dataset.category === category) {
-              btn.classList.add('active');
+          e.preventDefault();
+          const symbolText = card.querySelector('.stock-card__symbol').textContent;
+          const symbol = symbolText.toLowerCase().replace(/[^a-z]/g, '').substring(0, 4) || symbolText.toLowerCase();
+          // Map card text to data key by matching symbol text to stockData symbol
+          let matchedSymbol = symbol;
+          for (const key in stockData) {
+            if (stockData[key].symbol === symbolText) {
+              matchedSymbol = key;
+              break;
             }
-          });
-          currentFilter = 'all';
+          }
 
-          document.querySelectorAll('.filter-btn')[0].classList.add('active');
+          document.getElementById('modalTitle').textContent = `${symbolText} Data`;
           currentFilter = 'all';
-          document.getElementById('modalTitle').textContent = `${symbol} Data`;
+          document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+          document.querySelectorAll('.filter-btn')[0].classList.add('active');
           renderTable();
+          renderChart();
           document.getElementById('modalOverlay').classList.add('visible');
         });
       });
