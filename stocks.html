@@ -689,11 +689,13 @@
             </tbody>
           </table>
         </div>
-      </div>
-    </div>
-  </div>
+</div>
+</div>
+</div>
 
-  <footer style="background: #000000; color: #9ca3af; text-align: center; padding: 2rem; font-size: 0.9rem; margin-top: auto;">
+</div>
+
+<footer style="background: #000000; color: #9ca3af; text-align: center; padding: 2rem; font-size: 0.9rem; margin-top: auto;">
     <p data-i18n-key="footer_desc">Market Snapshot — quick view of stocks, crypto, forex, oil, gold, bonds and indices.</p>
     <p style="margin-top: 0.5rem;">
       <a href="https://github.com/Perry1231" target="_blank" rel="noopener noreferrer" style="color: #60a5fa; text-decoration: none;">GitHub</a>
@@ -874,9 +876,9 @@
 
                 if (infoParts.length >= 2) {
                   const info = infoParts[0];
-                  price = parseFloat(info.trim().match(/Last Trade.*?:\s*([\d.]+)/)?.[1]) || stockData[symbol].basePrice;
-                  change = parseFloat(info.match(/Change.*?:\s*([+-][\d.]+)/)?.[1]) || 0;
-                  changePercent = parseFloat(info.match(/Change.*?:\s*([+-][\d.]+)\s*\(([+\d.]+)%\)/)?.[2]) || 0;
+      price = parseFloat(info.trim().match(/Last Trade.*?:\s*([\d.]+)/)?.[1]) || stockData[symbol].basePrice;
+      change = parseFloat(info.match(/Change.*?:\s*([+-]?[\d.]+)/)?.[1]) || 0;
+      changePercent = parseFloat(info.match(/Change.*?:\s*[+-]?[\d.]+\s*\(([+-]?[\d.]+)%\)/)?.[1]) || 0;
                 }
 
                 let high, low, volume;
