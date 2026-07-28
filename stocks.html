@@ -984,113 +984,117 @@ change_pos: "+0.00 (+0.00%)"
       lastScroll = currentScroll;
     });
 
-    const stockData = {
-      aapl: { name: 'Apple Inc.', symbol: 'AAPL', category: 'Technology', basePrice: 178.42 },
-      msft: { name: 'Microsoft Corporation', symbol: 'MSFT', category: 'Technology', basePrice: 374.82 },
-      goog: { name: 'Alphabet Inc.', symbol: 'GOOGL', category: 'Technology', basePrice: 141.90 },
-      amzn: { name: 'Amazon.com Inc.', symbol: 'AMZN', category: 'Retail/E-Commerce', basePrice: 178.25 },
-      tsla: { name: 'Tesla Inc.', symbol: 'TSLA', category: 'Electric Vehicles', basePrice: 248.50 },
-      meta: { name: 'Meta Platforms, Inc.', symbol: 'META', category: 'Social Media', basePrice: 505.75 },
-      nvda: { name: 'NVIDIA Corporation', symbol: 'NVDA', category: 'Semiconductors', basePrice: 875.28 },
-      nflx: { name: 'Netflix, Inc.', symbol: 'NFLX', category: 'Media Streaming', basePrice: 628.30 },
-      brent: { name: 'Brent Crude Oil', symbol: 'BRENT', category: 'Oil & Energy', basePrice: 82.50 },
-      wti: { name: 'WTI Crude Oil', symbol: 'WTI', category: 'Oil & Energy', basePrice: 78.30 },
-      gold: { name: 'Gold Futures', symbol: 'XAU', category: 'Precious Metals', basePrice: 2025.00 },
-      silver: { name: 'Silver Futures', symbol: 'XAG', category: 'Precious Metals', basePrice: 23.50 },
-      dis: { name: 'The Walt Disney Company', symbol: 'DIS', category: 'Media Entertainment', basePrice: 112.80 },
-      nke: { name: 'Nike, Inc.', symbol: 'NKE', category: 'Apparel', basePrice: 86.20 },
-      adb: { name: 'Adobe Inc.', symbol: 'ADBE', category: 'Software', basePrice: 575.40 },
-      qco: { name: 'Qualcomm Incorporated', symbol: 'QCOM', category: 'Semiconductors', basePrice: 140.80 },
-      pyp: { name: 'PayPal Holdings, Inc.', symbol: 'PYPL', category: 'Fintech', basePrice: 68.50 },
-      int: { name: 'Intel Corporation', symbol: 'INTC', category: 'Semiconductors', basePrice: 28.90 },
-      cos: { name: 'Costco Wholesale', symbol: 'COST', category: 'Retail', basePrice: 725.30 },
-      ver: { name: 'Verizon Communications', symbol: 'VZ', category: 'Telecommunications', basePrice: 38.70 },
-      asml: { name: 'ASML Holding', symbol: 'ASML', category: 'Semiconductors', basePrice: 972.50 },
-      uber: { name: 'Uber Technologies', symbol: 'UBER', category: 'Transportation', basePrice: 72.40 }
+const stockData = {
+aapl: { name: 'Apple Inc.', symbol: 'AAPL', category: 'Technology', basePrice: 340.08, volatility: 0.4 },
+msft: { name: 'Microsoft Corporation', symbol: 'MSFT', category: 'Technology', basePrice: 378.20, volatility: 0.5 },
+goog: { name: 'Alphabet Inc.', symbol: 'GOOGL', category: 'Technology', basePrice: 138.65, volatility: 0.7 },
+amzn: { name: 'Amazon.com Inc.', symbol: 'AMZN', category: 'Retail/E-Commerce', basePrice: 165.00, volatility: 0.6 },
+tsla: { name: 'Tesla Inc.', symbol: 'TSLA', category: 'Electric Vehicles', basePrice: 217.30, volatility: 1.2 },
+meta: { name: 'Meta Platforms, Inc.', symbol: 'META', category: 'Social Media', basePrice: 421.45, volatility: 0.8 },
+nvda: { name: 'NVIDIA Corporation', symbol: 'NVDA', category: 'Semiconductors', basePrice: 118.20, volatility: 1.1 },
+nflx: { name: 'Netflix, Inc.', symbol: 'NFLX', category: 'Media Streaming', basePrice: 702.40, volatility: 0.9 },
+brent: { name: 'Brent Crude Oil', symbol: 'BRENT', category: 'Oil & Energy', basePrice: 79.80, volatility: 0.3 },
+wti: { name: 'WTI Crude Oil', symbol: 'WTI', category: 'Oil & Energy', basePrice: 76.45, volatility: 0.3 },
+gold: { name: 'Gold Futures', symbol: 'XAU', category: 'Precious Metals', basePrice: 3335.00, volatility: 2.5 },
+silver: { name: 'Silver Futures', symbol: 'XAG', category: 'Precious Metals', basePrice: 31.20, volatility: 0.5 },
+dis: { name: 'The Walt Disney Company', symbol: 'DIS', category: 'Media Entertainment', basePrice: 112.30, volatility: 0.6 },
+nke: { name: 'Nike, Inc.', symbol: 'NKE', category: 'Apparel', basePrice: 79.50, volatility: 0.4 },
+adb: { name: 'Adobe Inc.', symbol: 'ADBE', category: 'Software', basePrice: 442.75, volatility: 0.9 },
+qco: { name: 'Qualcomm Incorporated', symbol: 'QCOM', category: 'Semiconductors', basePrice: 168.10, volatility: 0.6 },
+pyp: { name: 'PayPal Holdings, Inc.', symbol: 'PYPL', category: 'Fintech', basePrice: 68.20, volatility: 0.5 },
+int: { name: 'Intel Corporation', symbol: 'INTC', category: 'Semiconductors', basePrice: 24.70, volatility: 0.4 },
+cos: { name: 'Costco Wholesale', symbol: 'COST', category: 'Retail', basePrice: 930.20, volatility: 0.6 },
+ver: { name: 'Verizon Communications', symbol: 'VZ', category: 'Telecommunications', basePrice: 40.10, volatility: 0.2 },
+asml: { name: 'ASML Holding', symbol: 'ASML', category: 'Semiconductors', basePrice: 895.50, volatility: 1.0 },
+uber: { name: 'Uber Technologies', symbol: 'UBER', category: 'Transportation', basePrice: 76.35, volatility: 0.7 }
+};
+
+let marketData = {};
+let priceHistory = {};
+let currentFilter = 'all';
+let lastRefresh = 0;
+const REFRESH_INTERVAL = 60000;
+
+function initMarket() {
+  const symbols = Object.keys(stockData);
+  symbols.forEach(symbol => {
+    const base = stockData[symbol].basePrice || 100;
+    const startPrice = base * (1 + (Math.random() - 0.5) * 0.01);
+    marketData[symbol] = {
+      price: startPrice,
+      change: 0,
+      changePercent: 0,
+      high: startPrice * 1.02,
+      low: startPrice * 0.98,
+      volume: Math.floor(Math.random() * 10000000)
+    };
+    priceHistory[symbol] = Array.from({ length: 60 }, () => startPrice + (Math.random() - 0.5) * base * 0.005);
+  });
+  renderCards();
+  renderTable();
+}
+
+function updateMarket() {
+  const symbols = Object.keys(stockData);
+  symbols.forEach(symbol => {
+    const prev = marketData[symbol].price;
+    const vol = stockData[symbol].volatility || 0.5;
+    const tick = (Math.random() - 0.5) * prev * (vol / 100);
+    const price = Math.max(prev * 0.5, prev + tick);
+    const change = price - stockData[symbol].basePrice;
+    const changePercent = stockData[symbol].basePrice ? (change / stockData[symbol].basePrice) * 100 : 0;
+    const high = Math.max(marketData[symbol].high, price);
+    const low = Math.min(marketData[symbol].low, price);
+    const volume = marketData[symbol].volume + Math.floor(Math.random() * 50000);
+
+    marketData[symbol] = {
+      price,
+      change,
+      changePercent,
+      high,
+      low,
+      volume
     };
 
-    let marketData = {};
-    let currentFilter = 'all';
-    let lastRefresh = 0;
-    const REFRESH_INTERVAL = 60000;
+    const history = priceHistory[symbol] || [];
+    history.push(price);
+    if (history.length > 60) history.shift();
+    priceHistory[symbol] = history;
+  });
 
-    async function fetchRealTimeData() {
-      try {
-        const symbols = Object.keys(stockData);
-        const promises = symbols.map(async symbol => {
-          try {
-            const response = await fetch(`https://stooq.com/q/l/?s=${stockData[symbol].symbol}&f=sd2t2ohlcv&h=${symbol.substring(0, 4).toUpperCase()}`);
-            const text = await response.text();
-
-            if (text.includes('Last Trade') && text.includes('Volume:')) {
-              const parts = text.split('\n\n\n');
-              if (parts.length >= 2) {
-                const infoParts = parts[1].split('[');
-                let price, change, changePercent;
-
-                if (infoParts.length >= 2) {
-                  const info = infoParts[0];
-      price = parseFloat(info.trim().match(/Last Trade.*?:\s*([\d.]+)/)?.[1]) || stockData[symbol].basePrice;
-      change = parseFloat(info.match(/Change.*?:\s*([+-]?[\d.]+)/)?.[1]) || 0;
-      changePercent = parseFloat(info.match(/Change.*?:\s*[+-]?[\d.]+\s*\(([+-]?[\d.]+)%\)/)?.[1]) || 0;
-                }
-
-                let high, low, volume;
-                const volumePart = text.match(/Volume:\s*([\d,]+)/)?.[1];
-                if (volumePart) {
-                  volume = parseInt(volumePart.replace(/,/g, ''));
-                }
-
-                return {
-                  symbol,
-                  price: price || stockData[symbol].basePrice,
-                  change: change || 0,
-                  changePercent: changePercent || 0,
-                  high: price * 1.05,
-                  low: price * 0.95,
-                  volume: volume || Math.floor(Math.random() * 10000000)
-                };
-              }
-            }
-          } catch (e) {
-            console.error(`Error fetching ${symbol}:`, e);
-          }
-          return null;
-        });
-
-        const results = await Promise.all(promises);
-        results.forEach(result => {
-          if (result) {
-            marketData[result.symbol] = result;
-          }
-        });
-
-        renderCards();
-        renderTable();
-      } catch (error) {
-        console.error('Error fetching market data:', error);
-      }
-    }
+  renderCards();
+  renderTable();
+  renderChart();
+}
 
     function formatNumber(num, decimals = 2) {
       if (num === null || num === undefined) return '--';
       return num.toLocaleString('en-US', { minimumFractionDigits: decimals, maximumFractionDigits: decimals });
     }
 
-    function renderChart() {
-      const line = document.getElementById('modalChartLine');
-      if (!line) return;
-      const points = [];
-      // Generate 20 points based on current market data or random variation around base price
-      const keys = Object.keys(stockData);
-      const base = stockData[keys[0]] ? stockData[keys[0]].basePrice : 100;
-      for (let i = 0; i < 20; i++) {
-        const x = (i / 19) * 400;
-        const y = 20 + Math.random() * 80;
-        points.push(`${x},${120 - y}`);
-      }
-      line.setAttribute('d', `M ${points.join(' L ')}`);
-    }
+function renderChart() {
+  const line = document.getElementById('modalChartLine');
+  if (!line) return;
+
+  const cards = Array.from(document.querySelectorAll('.stock-card'));
+  const visibleCards = cards.filter(card => currentFilter === 'all' || card.getAttribute('data-category') === currentFilter);
+  const symText = visibleCards[0] ? visibleCards[0].querySelector('.stock-card__symbol').textContent : null;
+  const symbolKey = symText ? Object.keys(stockData).find(key => stockData[key].symbol === symText) || (symText || '').toLowerCase().replace(/[^a-z]/g, '').substring(0, 4) : Object.keys(stockData)[0];
+  const history = priceHistory[symbolKey] || [];
+  if (!history.length) {
+    const base = stockData[symbolKey] ? stockData[symbolKey].basePrice : 100;
+    for (let i = 0; i < 20; i++) history.push(base + (Math.random() - 0.5) * base * 0.01);
+  }
+  const min = Math.min(...history);
+  const max = Math.max(...history);
+  const range = max - min || 1;
+  const points = history.map((value, index) => {
+    const x = history.length > 1 ? (index / (history.length - 1)) * 400 : 200;
+    const y = 120 - ((value - min) / range) * 100;
+    return `${x},${y}`;
+  });
+  line.setAttribute('d', `M ${points.join(' L ')}`);
+}
 
     function renderCards() {
       document.querySelectorAll('.stock-card').forEach(card => {
@@ -1186,9 +1190,9 @@ change_pos: "+0.00 (+0.00%)"
       }
     }
 
-    document.addEventListener('DOMContentLoaded', () => {
-      fetchRealTimeData();
-      setInterval(tick, 60000);
+document.addEventListener('DOMContentLoaded', () => {
+  initMarket();
+  setInterval(updateMarket, 1000);
 
       document.querySelectorAll('.filter-btn').forEach(btn => {
         btn.addEventListener('click', () => {
