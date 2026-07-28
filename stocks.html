@@ -413,12 +413,13 @@
     <a href="account.html" data-i18n-key="account">Account</a>
     <div class="lang-switcher">
       <button class="lang-btn" id="langBtn" data-i18n-key="lang">🌐 EN</button>
-      <div class="lang-dropdown" id="langDropdown">
-        <a href="#" data-lang="en">English</a>
-        <a href="#" data-lang="de">Deutsch</a>
-        <a href="#" data-lang="fr">Français</a>
-        <a href="#" data-lang="uk">Українська</a>
-      </div>
+<div class="lang-dropdown" id="langDropdown">
+  <a href="#" data-lang="en">English</a>
+  <a href="#" data-lang="de">Deutsch</a>
+  <a href="#" data-lang="fr">Français</a>
+  <a href="#" data-lang="ja">日本語</a>
+  <a href="#" data-lang="uk">Українська</a>
+</div>
     </div>
   </nav>
 
@@ -431,11 +432,11 @@
         </button>
       </div>
       <div class="filter-buttons">
-        <button class="filter-btn active" data-category="all">All</button>
-        <button class="filter-btn" data-category="tech">Tech</button>
-        <button class="filter-btn" data-category="retail">Retail</button>
-        <button class="filter-btn" data-category="energy">Energy</button>
-        <button class="filter-btn" data-category="metals">Metals</button>
+<button class="filter-btn active" data-category="all" data-i18n-key="filter_all">All</button>
+<button class="filter-btn" data-category="tech" data-i18n-key="filter_tech">Tech</button>
+<button class="filter-btn" data-category="retail" data-i18n-key="filter_retail">Retail</button>
+<button class="filter-btn" data-category="energy" data-i18n-key="filter_energy">Energy</button>
+<button class="filter-btn" data-category="metals" data-i18n-key="filter_metals">Metals</button>
       </div>
     </div>
 
@@ -676,13 +677,13 @@
           <table class="data-table">
             <thead>
               <tr>
-                <th>Symbol</th>
-                <th>Company</th>
-                <th>Price</th>
-                <th>Change%</th>
-                <th>High</th>
-                <th>Low</th>
-                <th>Volume</th>
+<th data-i18n-key="symbol">Symbol</th>
+<th data-i18n-key="company">Company</th>
+<th data-i18n-key="price">Price</th>
+<th data-i18n-key="change">Change%</th>
+<th data-i18n-key="high">High</th>
+<th data-i18n-key="low">Low</th>
+<th data-i18n-key="volume">Volume</th>
               </tr>
             </thead>
             <tbody id="dataTableBody">
@@ -703,44 +704,44 @@
   </footer>
 
   <section>
-    <h2>Other Features</h2>
+    <h2 data-i18n-key="other_features">Other Features</h2>
 
     <div class="feature-grid">
-      <div class="feature-card">
-        <div class="feature-icon">📈</div>
-        <h3>Chart Analysis</h3>
-        <p>Detailed technical analysis and historical data visualization</p>
-      </div>
+<div class="feature-card">
+<div class="feature-icon">📈</div>
+<h3 data-i18n-key="chart_analysis">Chart Analysis</h3>
+<p data-i18n-key="chart_analysis_desc">Detailed technical analysis and historical data visualization</p>
+</div>
 
-      <div class="feature-card">
-        <div class="feature-icon">📊</div>
-        <h3>Market Alerts</h3>
-        <p>Real-time notifications for price movements and news</p>
-      </div>
+<div class="feature-card">
+<div class="feature-icon">📊</div>
+<h3 data-i18n-key="market_alerts">Market Alerts</h3>
+<p data-i18n-key="market_alerts_desc">Real-time notifications for price movements and news</p>
+</div>
 
-      <div class="feature-card">
-        <div class="feature-icon">💡</div>
-        <h3>AI Insights</h3>
-        <p>Machine learning predictions and market analysis</p>
-      </div>
+<div class="feature-card">
+<div class="feature-icon">💡</div>
+<h3 data-i18n-key="ai_insights">AI Insights</h3>
+<p data-i18n-key="ai_insights_desc">Machine learning predictions and market analysis</p>
+</div>
 
-      <div class="feature-card">
-        <div class="feature-icon">🌍</div>
-        <h3>Global Markets</h3>
-        <p>International exchanges and cross-border trading</p>
-      </div>
+<div class="feature-card">
+<div class="feature-icon">🌍</div>
+<h3 data-i18n-key="global_markets">Global Markets</h3>
+<p data-i18n-key="global_markets_desc">International exchanges and cross-border trading</p>
+</div>
 
-      <div class="feature-card">
-        <div class="feature-icon">💼</div>
-        <h3>Portfolio Management</h3>
-        <p>Track and manage your investment portfolio</p>
-      </div>
+<div class="feature-card">
+<div class="feature-icon">💼</div>
+<h3 data-i18n-key="portfolio_management">Portfolio Management</h3>
+<p data-i18n-key="portfolio_management_desc">Track and manage your investment portfolio</p>
+</div>
 
-      <div class="feature-card">
-        <div class="feature-icon">📰</div>
-        <h3>Market News</h3>
-        <p>Latest financial news and market analysis reports</p>
-      </div>
+<div class="feature-card">
+<div class="feature-icon">📰</div>
+<h3 data-i18n-key="market_news">Market News</h3>
+<p data-i18n-key="market_news_desc">Latest financial news and market analysis reports</p>
+</div>
     </div>
   </section>
 
@@ -752,7 +753,36 @@ about: "About",
 services: "Services",
 account: "Account",
 lang: "🌐 EN",
-footer_desc: "Market Snapshot — quick view of stocks, crypto, forex, oil, gold, bonds and indices."
+footer_desc: "Market Snapshot — quick view of stocks, crypto, forex, oil, gold, bonds and indices.",
+filter_title: "Stocks",
+filter_all: "All",
+filter_tech: "Tech",
+filter_retail: "Retail",
+filter_energy: "Energy",
+filter_metals: "Metals",
+refresh: "Refresh",
+market_data: "Market Data",
+other_features: "Other Features",
+chart_analysis: "Chart Analysis",
+chart_analysis_desc: "Detailed technical analysis and historical data visualization",
+market_alerts: "Market Alerts",
+market_alerts_desc: "Real-time notifications for price movements and news",
+ai_insights: "AI Insights",
+ai_insights_desc: "Machine learning predictions and market analysis",
+global_markets: "Global Markets",
+global_markets_desc: "International exchanges and cross-border trading",
+portfolio_management: "Portfolio Management",
+portfolio_management_desc: "Track and manage your investment portfolio",
+market_news: "Market News",
+market_news_desc: "Latest financial news and market analysis reports",
+symbol: "Symbol",
+company: "Company",
+price: "Price",
+change: "Change%",
+high: "High",
+low: "Low",
+volume: "Volume",
+change_pos: "+0.00 (+0.00%)"
 },
 de: {
 home: "Startseite",
@@ -760,7 +790,36 @@ about: "Über uns",
 services: "Dienstleistungen",
 account: "Konto",
 lang: "🌐 DE",
-footer_desc: "Market Snapshot — schneller Überblick über Aktien, Krypto, Forex, Öl, Gold, Anleihen und Indizes."
+footer_desc: "Market Snapshot — schneller Überblick über Aktien, Krypto, Forex, Öl, Gold, Anleihen und Indizes.",
+filter_title: "Aktien",
+filter_all: "Alle",
+filter_tech: "Technologie",
+filter_retail: "Einzelhandel",
+filter_energy: "Energie",
+filter_metals: "Metalle",
+refresh: "Aktualisieren",
+market_data: "Marktdaten",
+other_features: "Weitere Funktionen",
+chart_analysis: "Chartanalyse",
+chart_analysis_desc: "Detaillierte technische Analyse und Visualisierung historischer Daten",
+market_alerts: "Marktbenachrichtigungen",
+market_alerts_desc: "Echtzeitbenachrichtigungen für Kursbewegungen und Nachrichten",
+ai_insights: "KI-Einblicke",
+ai_insights_desc: "Maschinelle Lernvorhersagen und Marktanalyse",
+global_markets: "Globale Märkte",
+global_markets_desc: "Internationale Börsen und grenzüberschreitender Handel",
+portfolio_management: "Portfolioverwaltung",
+portfolio_management_desc: "Verfolgen und verwalten Sie Ihr Anlageportfolio",
+market_news: "Marktnachrichten",
+market_news_desc: "Neueste Finanznachrichten und Marktanalyseberichte",
+symbol: "Symbol",
+company: "Unternehmen",
+price: "Preis",
+change: "Änderung%",
+high: "Hoch",
+low: "Tief",
+volume: "Volumen",
+change_pos: "+0.00 (+0.00%)"
 },
 fr: {
 home: "Accueil",
@@ -768,7 +827,36 @@ about: "À propos",
 services: "Services",
 account: "Compte",
 lang: "🌐 FR",
-footer_desc: "Market Snapshot — vue rapide des actions, crypto, forex, pétrole, or, obligations et indices."
+footer_desc: "Market Snapshot — vue rapide des actions, crypto, forex, pétrole, or, obligations et indices.",
+filter_title: "Actions",
+filter_all: "Tout",
+filter_tech: "Technologie",
+filter_retail: "Commerce",
+filter_energy: "Énergie",
+filter_metals: "Métaux",
+refresh: "Actualiser",
+market_data: "Données du marché",
+other_features: "Autres fonctionnalités",
+chart_analysis: "Analyse graphique",
+chart_analysis_desc: "Analyse technique détaillée et visualisation des données historiques",
+market_alerts: "Alertes du marché",
+market_alerts_desc: "Notifications en temps réel des mouvements de prix et des nouvelles",
+ai_insights: "Insights IA",
+ai_insights_desc: "Prédictions d'apprentissage automatique et analyse du marché",
+global_markets: "Marchés mondiaux",
+global_markets_desc: "Bourses internationales et commerce transfrontalier",
+portfolio_management: "Gestion de portefeuille",
+portfolio_management_desc: "Suivez et gérez votre portefeuille d'investissement",
+market_news: "Actualités du marché",
+market_news_desc: "Dernières actualités financières et rapports d'analyse du marché",
+symbol: "Symbole",
+company: "Entreprise",
+price: "Prix",
+change: "Variation%",
+high: "Haut",
+low: "Bas",
+volume: "Volume",
+change_pos: "+0.00 (+0.00%)"
 },
 ja: {
 home: "ホーム",
@@ -776,7 +864,36 @@ about: "概要",
 services: "サービス",
 account: "アカウント",
 lang: "🌐 JA",
-footer_desc: "Market Snapshot — 株式、暗号通貨、為替、原油、金、債券、指数の概要。"
+footer_desc: "Market Snapshot — 株式、暗号通貨、為替、原油、金、債券、指数の概要。",
+filter_title: "株式",
+filter_all: "全て",
+filter_tech: "テクノロジー",
+filter_retail: "小売",
+filter_energy: "エネルギー",
+filter_metals: "金属",
+refresh: "更新",
+market_data: "マーケットデータ",
+other_features: "その他の機能",
+chart_analysis: "チャート分析",
+chart_analysis_desc: "詳細なテクニカル分析と履歴データの可視化",
+market_alerts: "マーケットアラート",
+market_alerts_desc: "価格変動とニュースのリアルタイム通知",
+ai_insights: "AIインサイト",
+ai_insights_desc: "機械学習による予測と市場分析",
+global_markets: "グローバルマーケット",
+global_markets_desc: "国際取引所と国境を越えた取引",
+portfolio_management: "ポートフォリオ管理",
+portfolio_management_desc: "投資ポートフォリオの追跡と管理",
+market_news: "マーケットニュース",
+market_news_desc: "最新の金融ニュースと市場分析レポート",
+symbol: "シンボル",
+company: "企業",
+price: "価格",
+change: "変動%",
+high: "高値",
+low: "安値",
+volume: "出来高",
+change_pos: "+0.00 (+0.00%)"
 },
 uk: {
 home: "Головна",
@@ -806,6 +923,13 @@ portfolio_management: "Управління портфелем",
 portfolio_management_desc: "Відстеження та управління вашим інвестиційним портфелем",
 market_news: "Ринкові новини",
 market_news_desc: "Останні фінансові новини та звіти з аналізу ринку",
+symbol: "Символ",
+company: "Компанія",
+price: "Ціна",
+change: "Зміна%",
+high: "Макс",
+low: "Мін",
+volume: "Обсяг",
 change_pos: "+0.00 (+0.00%)"
 }
 };

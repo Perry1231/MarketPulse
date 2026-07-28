@@ -1,81 +1,165 @@
 <!DOCTYPE html>
 <html lang="uk">
 <head>
-  <meta charset="UTF-8">
-  <title>Contact</title>
-  <style>
-    * { margin: 0; padding: 0; }
-    body {
-      background: #ffffff;
-      font-family: Arial, sans-serif;
-      min-height: 200vh;
-    }
+<meta charset="UTF-8">
+<title>Contact</title>
+<style>
+* { margin: 0; padding: 0; }
+body { background: #ffffff; font-family: Arial, sans-serif; min-height: 200vh; }
 
-    .nav {
-      position: fixed;
-      top: 20px;
-      left: 50%;
-      transform: translateX(-50%) rotateX(0deg);
-      width: 70%;
-      max-width: 800px;
-      height: 60px;
-      background: #111827;
-      border-radius: 40px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 2rem;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.15);
-      transition: transform 0.5s ease, opacity 0.3s ease;
-      z-index: 1000;
-    }
+.nav {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%) rotateX(0deg);
+  width: 70%;
+  max-width: 800px;
+  height: 60px;
+  background: #111827;
+  border-radius: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5rem;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+  transition: transform 0.5s ease, opacity 0.3s ease;
+  z-index: 1000;
+}
+.nav.hidden {
+  transform: translateX(-50%) rotateX(180deg);
+  opacity: 0;
+  pointer-events: none;
+}
+.nav a {
+  color: #fff;
+  text-decoration: none;
+  font-size: 1rem;
+  font-weight: 500;
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  transition: background 0.2s;
+}
+.nav a:hover { background: rgba(255,255,255,0.1); }
+.nav a.active { background: #2563eb; color: #fff; }
 
-    .nav.hidden {
-      transform: translateX(-50%) rotateX(180deg);
-      opacity: 0;
-      pointer-events: none;
-    }
-
-    .nav a {
-      color: #fff;
-      text-decoration: none;
-      font-size: 1rem;
-      font-weight: 500;
-      padding: 0.5rem 1rem;
-      border-radius: 20px;
-      transition: background 0.2s;
-    }
-
-    .nav a:hover {
-      background: rgba(255,255,255,0.1);
-    }
-  </style>
+.lang-switcher { position: relative; }
+.lang-btn {
+  background: rgba(255,255,255,0.1);
+  border: none;
+  color: #fff;
+  padding: 0.4rem 0.8rem;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+.lang-dropdown {
+  display: none;
+  position: absolute;
+  top: 110%;
+  right: 0;
+  background: #1f2937;
+  border-radius: 12px;
+  overflow: hidden;
+  min-width: 140px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+}
+.lang-dropdown.show { display: block; }
+.lang-dropdown a {
+  display: block;
+  padding: 0.6rem 1rem;
+  color: #fff;
+  text-decoration: none;
+  font-size: 0.9rem;
+}
+.lang-dropdown a:hover { background: #374151; }
+</style>
 </head>
 <body>
+<nav class="nav" id="nav">
+  <a href="index.html" data-i18n-key="home">Home</a>
+  <a href="about.html" data-i18n-key="about">About</a>
+  <a href="services.html" data-i18n-key="services">Services</a>
+  <a href="contact.html" class="active" data-i18n-key="account">Account</a>
+  <div class="lang-switcher">
+    <button class="lang-btn" id="langBtn" data-i18n-key="lang">🌐 EN</button>
+    <div class="lang-dropdown" id="langDropdown">
+      <a href="#" data-lang="en">English</a>
+      <a href="#" data-lang="de">Deutsch</a>
+      <a href="#" data-lang="fr">Français</a>
+      <a href="#" data-lang="ja">日本語</a>
+      <a href="#" data-lang="uk">Українська</a>
+    </div>
+  </div>
+</nav>
 
-  <nav class="nav" id="nav">
-    <a href="index.html">Home</a>
-    <a href="about.html">About</a>
-    <a href="services.html">Services</a>
-    <a href="contact.html">Contact</a>
-  </nav>
+<script>
+const translations = {
+  en: {
+    home: "Home",
+    about: "About",
+    services: "Services",
+    account: "Account",
+    lang: "🌐 EN"
+  },
+  de: {
+    home: "Startseite",
+    about: "Über uns",
+    services: "Dienstleistungen",
+    account: "Konto",
+    lang: "🌐 DE"
+  },
+  fr: {
+    home: "Accueil",
+    about: "À propos",
+    services: "Services",
+    account: "Compte",
+    lang: "🌐 FR"
+  },
+  ja: {
+    home: "ホーム",
+    about: "概要",
+    services: "サービス",
+    account: "アカウント",
+    lang: "🌐 JA"
+  },
+  uk: {
+    home: "Головна",
+    about: "Про нас",
+    services: "Послуги",
+    account: "Акаунт",
+    lang: "🌐 UA"
+  }
+};
 
-  <script>
-    let lastScroll = 0;
-    const nav = document.getElementById('nav');
+function applyLanguage(lang) {
+  document.documentElement.lang = lang;
+  document.querySelectorAll('[data-i18n-key]').forEach(el => {
+    const key = el.getAttribute('data-i18n-key');
+    if (translations[lang] && translations[lang][key]) {
+      el.textContent = translations[lang][key];
+    }
+  });
+  localStorage.setItem('lang', lang);
+}
 
-    window.addEventListener('scroll', () => {
-      const currentScroll = window.pageYOffset;
+const savedLang = localStorage.getItem('lang') || 'en';
+applyLanguage(savedLang);
 
-      if (currentScroll > lastScroll && currentScroll > 100) {
-        nav.classList.add('hidden');
-      } else {
-        nav.classList.remove('hidden');
-      }
-
-      lastScroll = currentScroll;
-    });
-  </script>
-
+const langBtn = document.getElementById('langBtn');
+const langDropdown = document.getElementById('langDropdown');
+langBtn.addEventListener('click', (e) => {
+  e.stopPropagation();
+  langDropdown.classList.toggle('show');
+});
+document.querySelectorAll('#langDropdown a').forEach(link => {
+  link.addEventListener('click', (e) => {
+    e.preventDefault();
+    const lang = link.getAttribute('data-lang');
+    applyLanguage(lang);
+    langDropdown.classList.remove('show');
+  });
+});
+document.addEventListener('click', () => langDropdown.classList.remove('show'));
+</script>
 </body>
 </html>
