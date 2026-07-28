@@ -417,7 +417,7 @@
         <a href="#" data-lang="en">English</a>
         <a href="#" data-lang="de">Deutsch</a>
         <a href="#" data-lang="fr">Français</a>
-        <a href="#" data-lang="ja">日本語</a>
+        <a href="#" data-lang="uk">Українська</a>
       </div>
     </div>
   </nav>
@@ -425,7 +425,7 @@
   <div style="flex: 1;">
     <div class="filter-bar">
       <div style="display: flex; align-items: center;">
-        <div class="filter-title">Stocks</div>
+        <div class="filter-title" data-i18n-key="filter_title">Stocks</div>
         <button class="refresh-btn" id="refreshBtn">
           ↻
         </button>
@@ -745,40 +745,70 @@
   </section>
 
   <script>
-    const translations = {
-      en: {
-        home: "Home",
-        about: "About",
-        services: "Services",
-        account: "Account",
-        lang: "🌐 EN",
-        footer_desc: "Market Snapshot — quick view of stocks, crypto, forex, oil, gold, bonds and indices."
-      },
-      de: {
-        home: "Startseite",
-        about: "Über uns",
-        services: "Dienstleistungen",
-        account: "Konto",
-        lang: "🌐 DE",
-        footer_desc: "Market Snapshot — schneller Überblick über Aktien, Krypto, Forex, Öl, Gold, Anleihen und Indizes."
-      },
-      fr: {
-        home: "Accueil",
-        about: "À propos",
-        services: "Services",
-        account: "Compte",
-        lang: "🌐 FR",
-        footer_desc: "Market Snapshot — vue rapide des actions, crypto, forex, pétrole, or, obligations et indices."
-      },
-      ja: {
-        home: "ホーム",
-        about: "概要",
-        services: "サービス",
-        account: "アカウント",
-        lang: "🌐 JA",
-        footer_desc: "Market Snapshot — 株式、暗号通貨、為替、原油、金、債券、指数の概要。"
-      }
-    };
+const translations = {
+en: {
+home: "Home",
+about: "About",
+services: "Services",
+account: "Account",
+lang: "🌐 EN",
+footer_desc: "Market Snapshot — quick view of stocks, crypto, forex, oil, gold, bonds and indices."
+},
+de: {
+home: "Startseite",
+about: "Über uns",
+services: "Dienstleistungen",
+account: "Konto",
+lang: "🌐 DE",
+footer_desc: "Market Snapshot — schneller Überblick über Aktien, Krypto, Forex, Öl, Gold, Anleihen und Indizes."
+},
+fr: {
+home: "Accueil",
+about: "À propos",
+services: "Services",
+account: "Compte",
+lang: "🌐 FR",
+footer_desc: "Market Snapshot — vue rapide des actions, crypto, forex, pétrole, or, obligations et indices."
+},
+ja: {
+home: "ホーム",
+about: "概要",
+services: "サービス",
+account: "アカウント",
+lang: "🌐 JA",
+footer_desc: "Market Snapshot — 株式、暗号通貨、為替、原油、金、債券、指数の概要。"
+},
+uk: {
+home: "Головна",
+about: "Про нас",
+services: "Послуги",
+account: "Акаунт",
+lang: "🌐 UA",
+footer_desc: "Market Snapshot — швидкий огляд акцій, криптовалюти, forex, нафти, золота, облігацій та індексів.",
+filter_title: "Акції",
+filter_all: "Усі",
+filter_tech: "Технології",
+filter_retail: "Рітейл",
+filter_energy: "Енергія",
+filter_metals: "Метали",
+refresh: "Оновити",
+market_data: "Дані ринку",
+other_features: "Інші можливості",
+chart_analysis: "Аналіз графіків",
+chart_analysis_desc: "Детальний технічний аналіз і візуалізація історичних даних",
+market_alerts: "Ринкові сповіщення",
+market_alerts_desc: "Сповіщення про рух цін і новини в реальному часі",
+ai_insights: "ШІ аналітика",
+ai_insights_desc: "Прогнози машинного навчання та аналіз ринку",
+global_markets: "Глобальні ринки",
+global_markets_desc: "Міжнародні біржі та міжнародна торгівля",
+portfolio_management: "Управління портфелем",
+portfolio_management_desc: "Відстеження та управління вашим інвестиційним портфелем",
+market_news: "Ринкові новини",
+market_news_desc: "Останні фінансові новини та звіти з аналізу ринку",
+change_pos: "+0.00 (+0.00%)"
+}
+};
 
     function applyLanguage(lang) {
       document.documentElement.lang = lang;
