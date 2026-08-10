@@ -1129,6 +1129,11 @@ function renderChart() {
       renderChart();
     }
 
+    async function fetchRealTimeData() {
+      // Real-time data fetch placeholder — refreshes market data
+      await initMarket();
+    }
+
     async function tick() {
       await fetchRealTimeData();
       const now = Date.now();
