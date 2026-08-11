@@ -508,13 +508,13 @@ uk: {
       lastScroll = currentScroll;
     });
 
-const BASE_PRICES = { oil: 80.28, gold: 4039.00 };
-const history = {
-  oil: Array.from({ length: 120 }, () => BASE_PRICES.oil + (Math.random() - 0.5) * 2),
-  gold: Array.from({ length: 120 }, () => BASE_PRICES.gold + (Math.random() - 0.5) * 20)
-};
-let live = { oil: BASE_PRICES.oil, gold: BASE_PRICES.gold };
-let lastLiveBase = { ...live };
+    const BASE_PRICES = { oil: 80.28, gold: 4039.00 };
+    const history = {
+      oil: Array.from({ length: 120 }, () => BASE_PRICES.oil + (Math.random() - 0.5) * 2),
+      gold: Array.from({ length: 120 }, () => BASE_PRICES.gold + (Math.random() - 0.5) * 20)
+    };
+    let live = { oil: BASE_PRICES.oil, gold: BASE_PRICES.gold };
+    let lastLiveBase = { ...live };
 
 async function fetchLiveBase() {
   try {
