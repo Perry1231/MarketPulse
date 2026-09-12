@@ -714,6 +714,7 @@ backdrop-filter: blur(4px);
     </p>
 </footer>
 
+  <script src="api.js"></script>
   <script>
 const translations = {
 en: {
@@ -1163,8 +1164,33 @@ function renderChart() {
     }
 
     async function fetchRealTimeData() {
-      // Real-time data fetch placeholder — refreshes market data
-      await initMarket();
+      try {
+        const data = await MarketPulseAPI.getStocks();
+        data.forEach((item) => {
+          const key = item.symbol.toLowerCase();
+          stockData[key] = {
+            ...stockData[key],
+            name: item.name,
+            symbol: item.symbol,
+            category: item.category,
+            basePrice: item.basePrice,
+            volatility: item.volatility
+          };
+          marketData[key] = {
+            ...item,
+            high: item.high,
+            low: item.low,
+            volume: item.volume
+          };
+          priceHistory[key] = priceHistory[key] || Array.from({ length: 60 }, () => item.price * (1 + (Math.random() - 0.5) * 0.005));
+        });
+        renderCards();
+        renderTable();
+        renderChart();
+      } catch (error) {
+        console.warn("Failed to refresh market data:", error);
+        initMarket();
+      }
     }
 
     async function tick() {
