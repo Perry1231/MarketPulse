@@ -1,4 +1,4 @@
-"use strict";
+﻿"use strict";
 
 const http = require("http");
 const fs = require("fs");
@@ -27,7 +27,7 @@ const marketCatalog = [
   { symbol: "INTC", name: "Intel Corporation", category: "Semiconductors", type: "stocks", basePrice: 24.7, volatility: 0.4 },
   { symbol: "COST", name: "Costco Wholesale", category: "Retail", type: "stocks", basePrice: 930.2, volatility: 0.6 },
   { symbol: "VZ", name: "Verizon Communications", category: "Telecommunications", type: "stocks", basePrice: 40.1, volatility: 0.2 },
-  { symbol: "ASML", name: "ASML Holding", category: "Semiconductors", type: "stocks", basePrice: 895.5, volatility: 1, },
+  { symbol: "ASML", name: "ASML Holding", category: "Semiconductors", type: "stocks", basePrice: 895.5, volatility: 1 },
   { symbol: "UBER", name: "Uber Technologies", category: "Transportation", type: "stocks", basePrice: 76.35, volatility: 0.7 },
   { symbol: "BRENT", name: "Brent Crude Oil", category: "Oil & Energy", type: "energy", basePrice: 79.8, volatility: 0.3 },
   { symbol: "WTI", name: "WTI Crude Oil", category: "Oil & Energy", type: "energy", basePrice: 76.45, volatility: 0.3 },
@@ -118,37 +118,178 @@ function tickMarket(market) {
   market.updatedAt = new Date().toISOString();
 }
 
+// Bug fix: getMarket now correctly operates on marketState (not the catalog entry)
 function getMarket(symbol) {
-  const market = findMarket(symbol);
-  if (!market) return null;
-  tickMarket(market);
-  return clone(market);
+  const catalogEntry = findMarket(symbol);
+  if (!catalogEntry) return null;
+  const state = marketState.get(catalogEntry.symbol);
+  if (!state) return null;
+  tickMarket(state);
+  return clone(state);
 }
 
+// Bug fix: getMarkets now ticks each market before returning
 function getMarkets() {
+  marketCatalog.forEach((m) => {
+    const state = marketState.get(m.symbol);
+    if (state) tickMarket(state);
+  });
   return marketCatalog.map((market) => clone(marketState.get(market.symbol)));
 }
 
+// Bug fix: getStocks now ticks each stock market before returning
 function getStocks() {
-  return marketCatalog.filter((market) => market.type === "stocks").map((market) => clone(marketState.get(market.symbol)));
+  return marketCatalog
+    .filter((market) => market.type === "stocks")
+    .map((market) => {
+      const state = marketState.get(market.symbol);
+      if (state) tickMarket(state);
+      return clone(state);
+    });
 }
 
+// Bug fix: getHistory now reads from marketState (not catalog entry)
 function getHistory(symbol, points = 60) {
   const market = findMarket(symbol);
   if (!market) return null;
+  const state = marketState.get(market.symbol);
+  if (!state) return null;
   const normalizedPoints = Math.min(500, Math.max(2, Number(points) || 60));
-  const history = market.history.slice(-normalizedPoints);
+  const history = state.history.slice(-normalizedPoints);
   while (history.length < normalizedPoints) {
-    const previous = history.length ? history[history.length - 1] : market.price;
-    const next = Math.max(0.01, previous * (1 + (Math.random() - 0.5) * (market.volatility / 100)));
+    const previous = history.length ? history[history.length - 1] : state.price;
+    const next = Math.max(0.01, previous * (1 + (Math.random() - 0.5) * (state.volatility / 100)));
     history.push(next);
   }
   return {
-    symbol: market.symbol,
-    name: market.name,
+    symbol: state.symbol,
+    name: state.name,
     points: normalizedPoints,
     history
   };
+}
+
+// ── External data fetching ───────────────────────────────────────────────────
+
+// Bug fix: CoinGecko requires full coin names, not ticker symbols
+const COINGECKO_IDS = { BTC: "bitcoin", ETH: "ethereum", SOL: "solana", BNB: "binancecoin" };
+
+// Yahoo Finance ticker map: our symbol => Yahoo ticker
+const YAHOO_SYMBOLS = {
+  AAPL: "AAPL", MSFT: "MSFT", GOOGL: "GOOGL", AMZN: "AMZN", TSLA: "TSLA",
+  META: "META", NVDA: "NVDA", NFLX: "NFLX", DIS: "DIS", NKE: "NKE",
+  ADBE: "ADBE", QCOM: "QCOM", PYPL: "PYPL", INTC: "INTC", COST: "COST",
+  VZ: "VZ", ASML: "ASML", UBER: "UBER",
+  EURUSD: "EURUSD=X", USDJPY: "JPY=X", GBPUSD: "GBPUSD=X", UAHUSD: "UAH=X",
+  BRENT: "BZ=F", WTI: "CL=F",
+  XAU: "GC=F", XAG: "SI=F",
+  SP500: "^GSPC", NASDAQ: "^IXIC", DOW: "^DJI",
+  US10Y: "^TNX"
+};
+
+async function fetchYahooPrice(yahooTicker) {
+  const url = `https://query1.finance.yahoo.com/v8/finance/chart/${encodeURIComponent(yahooTicker)}?interval=1m&range=1d`;
+  const response = await fetch(url, {
+    headers: { "User-Agent": "Mozilla/5.0" },
+    signal: AbortSignal.timeout(6000)
+  });
+  if (!response.ok) return null;
+  const payload = await response.json();
+  const meta = payload && payload.chart && payload.chart.result && payload.chart.result[0] && payload.chart.result[0].meta;
+  if (!meta) return null;
+  const price = meta.regularMarketPrice;
+  const prevClose = meta.previousClose != null ? meta.previousClose
+    : meta.chartPreviousClose != null ? meta.chartPreviousClose
+    : meta.regularMarketPreviousClose;
+  if (!Number.isFinite(price) || price <= 0) return null;
+  return { price, prevClose: prevClose || price };
+}
+
+async function fetchCryptoData() {
+  const ids = Object.values(COINGECKO_IDS).join(",");
+  const url = `https://api.coingecko.com/api/v3/simple/price?ids=${ids}&vs_currencies=usd&include_24hr_change=true`;
+  const response = await fetch(url, { signal: AbortSignal.timeout(6000) });
+  if (!response.ok) return null;
+  return response.json();
+}
+
+async function fetchGoldSilverPrice(symbol) {
+  const response = await fetch(`https://api.gold-api.com/price/${symbol}`, {
+    signal: AbortSignal.timeout(5000)
+  });
+  if (!response.ok) return null;
+  const payload = await response.json();
+  const value = Number(
+    payload && (payload.price != null ? payload.price
+      : payload.data && payload.data.price != null ? payload.data.price
+      : null)
+  );
+  return Number.isFinite(value) && value > 0 ? value : null;
+}
+
+function applyExternalPrice(symbol, price, prevClose) {
+  const state = marketState.get(symbol);
+  if (!state || !Number.isFinite(price) || price <= 0) return;
+  state.price = price;
+  const ref = (prevClose && Number.isFinite(prevClose) && prevClose > 0) ? prevClose : state.basePrice;
+  state.change = price - ref;
+  state.changePercent = ref ? ((price - ref) / ref) * 100 : 0;
+  if (prevClose && Number.isFinite(prevClose) && prevClose > 0) {
+    state.basePrice = prevClose;
+  }
+  state.high = Math.max(state.high, price);
+  state.low = Math.min(state.low, price);
+  state.history.push(price);
+  if (state.history.length > 60) state.history.shift();
+  state.updatedAt = new Date().toISOString();
+}
+
+async function refreshExternalMarkets() {
+  const tasks = [];
+
+  // Crypto via CoinGecko (correct coin IDs)
+  tasks.push(
+    fetchCryptoData().then((data) => {
+      if (!data) return;
+      for (const [sym, geckoId] of Object.entries(COINGECKO_IDS)) {
+        const entry = data[geckoId];
+        if (!entry) continue;
+        const price = entry.usd;
+        const change24h = entry.usd_24h_change;
+        if (!Number.isFinite(price) || price <= 0) continue;
+        const prevClose = Number.isFinite(change24h) ? price / (1 + change24h / 100) : null;
+        applyExternalPrice(sym, price, prevClose);
+      }
+    }).catch(() => undefined)
+  );
+
+  // Metals: gold-api first, Yahoo Finance as fallback
+  for (const sym of ["XAU", "XAG"]) {
+    tasks.push(
+      fetchGoldSilverPrice(sym).then(async (price) => {
+        if (price) { applyExternalPrice(sym, price, null); return; }
+        const yahooTicker = YAHOO_SYMBOLS[sym];
+        if (!yahooTicker) return;
+        const d = await fetchYahooPrice(yahooTicker).catch(() => null);
+        if (d) applyExternalPrice(sym, d.price, d.prevClose);
+      }).catch(() => undefined)
+    );
+  }
+
+  // Stocks, forex, oil, indices via Yahoo Finance
+  const yahooOnlySymbols = Object.keys(YAHOO_SYMBOLS).filter(
+    (s) => !COINGECKO_IDS[s] && s !== "XAU" && s !== "XAG"
+  );
+  for (const sym of yahooOnlySymbols) {
+    const yahooTicker = YAHOO_SYMBOLS[sym];
+    tasks.push(
+      fetchYahooPrice(yahooTicker).then((d) => {
+        if (d) applyExternalPrice(sym, d.price, d.prevClose);
+      }).catch(() => undefined)
+    );
+  }
+
+  await Promise.all(tasks);
 }
 
 function setCommonHeaders(res) {
@@ -202,45 +343,6 @@ function parseContactBody(body) {
     throw new Error("Name, valid email and message are required");
   }
   return { name, email, message };
-}
-
-async function fetchExternalMarketData(market) {
-  const normalized = normalizeSymbol(market.symbol);
-  if (["BTC", "ETH", "SOL", "BNB"].includes(normalized)) {
-    const ids = marketCatalog.filter((item) => item.type === "crypto").map((item) => item.symbol).join(",");
-    const response = await fetch(`https://api.coingecko.com/api/v3/simple/price?ids=${ids}&vs_currencies=usd&include_24hr_change=true`, {
-      signal: AbortSignal.timeout(5000)
-    });
-    if (response.ok) {
-      const payload = await response.json();
-      const value = payload?.[normalized.toLowerCase()]?.usd;
-      if (Number.isFinite(value) && value > 0) {
-        market.price = value;
-        market.change = value - market.basePrice;
-        market.changePercent = market.basePrice ? (market.change / market.basePrice) * 100 : 0;
-      }
-    }
-    return;
-  }
-
-  if (["XAU", "XAG"].includes(normalized)) {
-    const response = await fetch(`https://api.gold-api.com/price/${normalized}`, {
-      signal: AbortSignal.timeout(5000)
-    });
-    if (response.ok) {
-      const payload = await response.json();
-      const value = Number(payload?.price ?? payload?.data?.price ?? payload?.[normalized.toLowerCase()]?.usd);
-      if (Number.isFinite(value) && value > 0) {
-        market.price = value;
-        market.change = value - market.basePrice;
-        market.changePercent = market.basePrice ? (market.change / market.basePrice) * 100 : 0;
-      }
-    }
-  }
-}
-
-async function refreshExternalMarkets() {
-  await Promise.all(marketCatalog.filter((market) => ["BTC", "ETH", "SOL", "BNB", "XAU", "XAG"].includes(market.symbol)).map(fetchExternalMarketData));
 }
 
 async function serveStatic(req, res, pathname) {
@@ -313,14 +415,18 @@ async function handleApi(req, res, url) {
   }
 
   if (req.method === "GET" && url.pathname === "/api/stocks") {
+    await refreshExternalMarkets().catch(() => undefined);
     sendJson(res, 200, { data: getStocks(), updatedAt: new Date().toISOString() });
     return;
   }
 
   const groupMatch = url.pathname.match(/^\/api\/(stocks|forex|crypto|indices|bonds|energy|metals)$/);
   if (req.method === "GET" && groupMatch) {
+    await refreshExternalMarkets().catch(() => undefined);
     const type = groupMatch[1];
-    const data = marketCatalog.filter((market) => market.type === type).map((market) => clone(marketState.get(market.symbol)));
+    const data = marketCatalog
+      .filter((market) => market.type === type)
+      .map((market) => clone(marketState.get(market.symbol)));
     sendJson(res, 200, { data, type, updatedAt: new Date().toISOString() });
     return;
   }
@@ -338,6 +444,7 @@ async function handleApi(req, res, url) {
 
   const marketMatchSimple = url.pathname.match(/^\/api\/(?:market|markets)\/([^/]+)$/);
   if (req.method === "GET" && marketMatchSimple) {
+    await refreshExternalMarkets().catch(() => undefined);
     const market = getMarket(marketMatchSimple[1]);
     if (!market) {
       sendError(res, 404, "Market not found");

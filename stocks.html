@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="uk">
 <head>
   <meta charset="UTF-8">
@@ -1193,17 +1193,15 @@ function renderChart() {
       }
     }
 
-    async function tick() {
-      await fetchRealTimeData();
-      const now = Date.now();
-      if (now - lastRefresh > REFRESH_INTERVAL) {
-        lastRefresh = now;
-      }
-    }
+    // tick() was unused — fetchRealTimeData() is now called directly on a timer
 
 document.addEventListener('DOMContentLoaded', () => {
   initMarket();
-  setInterval(updateMarket, 1000);
+  // Bug fix: replace random-simulation tick with real API fetch every 15s
+  fetchRealTimeData();
+  setInterval(fetchRealTimeData, 15000);
+  // Keep local simulation ticking every 2s for smooth visual updates between API calls
+  setInterval(updateMarket, 2000);
 
       document.querySelectorAll('.filter-btn').forEach(btn => {
         btn.addEventListener('click', () => {
