@@ -11,40 +11,40 @@ const ROOT = __dirname;
 const MAX_BODY_SIZE = 64 * 1024;
 
 const marketCatalog = [
-  { symbol: "AAPL", name: "Apple Inc.", category: "Technology", type: "stocks", basePrice: 340.08, volatility: 0.4 },
-  { symbol: "MSFT", name: "Microsoft Corporation", category: "Technology", type: "stocks", basePrice: 378.2, volatility: 0.5 },
-  { symbol: "GOOGL", name: "Alphabet Inc.", category: "Technology", type: "stocks", basePrice: 138.65, volatility: 0.7 },
-  { symbol: "AMZN", name: "Amazon.com Inc.", category: "Retail/E-Commerce", type: "stocks", basePrice: 165, volatility: 0.6 },
-  { symbol: "TSLA", name: "Tesla Inc.", category: "Electric Vehicles", type: "stocks", basePrice: 217.3, volatility: 1.2 },
-  { symbol: "META", name: "Meta Platforms, Inc.", category: "Social Media", type: "stocks", basePrice: 421.45, volatility: 0.8 },
-  { symbol: "NVDA", name: "NVIDIA Corporation", category: "Semiconductors", type: "stocks", basePrice: 118.2, volatility: 1.1 },
-  { symbol: "NFLX", name: "Netflix, Inc.", category: "Media Streaming", type: "stocks", basePrice: 702.4, volatility: 0.9 },
-  { symbol: "DIS", name: "The Walt Disney Company", category: "Media Entertainment", type: "stocks", basePrice: 112.3, volatility: 0.6 },
-  { symbol: "NKE", name: "Nike, Inc.", category: "Apparel", type: "stocks", basePrice: 79.5, volatility: 0.4 },
-  { symbol: "ADBE", name: "Adobe Inc.", category: "Software", type: "stocks", basePrice: 442.75, volatility: 0.9 },
-  { symbol: "QCOM", name: "Qualcomm Incorporated", category: "Semiconductors", type: "stocks", basePrice: 168.1, volatility: 0.6 },
-  { symbol: "PYPL", name: "PayPal Holdings, Inc.", category: "Fintech", type: "stocks", basePrice: 68.2, volatility: 0.5 },
-  { symbol: "INTC", name: "Intel Corporation", category: "Semiconductors", type: "stocks", basePrice: 24.7, volatility: 0.4 },
-  { symbol: "COST", name: "Costco Wholesale", category: "Retail", type: "stocks", basePrice: 930.2, volatility: 0.6 },
-  { symbol: "VZ", name: "Verizon Communications", category: "Telecommunications", type: "stocks", basePrice: 40.1, volatility: 0.2 },
-  { symbol: "ASML", name: "ASML Holding", category: "Semiconductors", type: "stocks", basePrice: 895.5, volatility: 1 },
-  { symbol: "UBER", name: "Uber Technologies", category: "Transportation", type: "stocks", basePrice: 76.35, volatility: 0.7 },
-  { symbol: "BRENT", name: "Brent Crude Oil", category: "Oil & Energy", type: "energy", basePrice: 79.8, volatility: 0.3 },
-  { symbol: "WTI", name: "WTI Crude Oil", category: "Oil & Energy", type: "energy", basePrice: 76.45, volatility: 0.3 },
-  { symbol: "XAU", name: "Gold Futures", category: "Precious Metals", type: "metals", basePrice: 3335, volatility: 2.5 },
-  { symbol: "XAG", name: "Silver Futures", category: "Precious Metals", type: "metals", basePrice: 31.2, volatility: 0.5 },
-  { symbol: "EURUSD", name: "Euro / US Dollar", category: "Forex", type: "forex", basePrice: 1.08, volatility: 0.08 },
-  { symbol: "USDJPY", name: "US Dollar / Japanese Yen", category: "Forex", type: "forex", basePrice: 155.2, volatility: 0.12 },
-  { symbol: "GBPUSD", name: "British Pound / US Dollar", category: "Forex", type: "forex", basePrice: 1.27, volatility: 0.08 },
-  { symbol: "UAHUSD", name: "Ukrainian Hryvnia / US Dollar", category: "Forex", type: "forex", basePrice: 0.025, volatility: 0.15 },
-  { symbol: "BTC", name: "Bitcoin", category: "Cryptocurrency", type: "crypto", basePrice: 65000, volatility: 1.8 },
-  { symbol: "ETH", name: "Ethereum", category: "Cryptocurrency", type: "crypto", basePrice: 3200, volatility: 2.2 },
-  { symbol: "SOL", name: "Solana", category: "Cryptocurrency", type: "crypto", basePrice: 145, volatility: 2.8 },
-  { symbol: "BNB", name: "BNB", category: "Cryptocurrency", type: "crypto", basePrice: 590, volatility: 2.0 },
-  { symbol: "SP500", name: "S&P 500", category: "Indices", type: "indices", basePrice: 5300, volatility: 0.35 },
-  { symbol: "NASDAQ", name: "Nasdaq Composite", category: "Indices", type: "indices", basePrice: 17500, volatility: 0.4 },
-  { symbol: "DOW", name: "Dow Jones Industrial Average", category: "Indices", type: "indices", basePrice: 39000, volatility: 0.3 },
-  { symbol: "US10Y", name: "US 10-Year Treasury", category: "Bonds", type: "bonds", basePrice: 4.35, volatility: 0.12 }
+  { symbol: "AAPL", name: "Apple Inc.", category: "Technology", type: "stocks", basePrice: 337.6, volatility: 0.4 },
+  { symbol: "MSFT", name: "Microsoft Corporation", category: "Technology", type: "stocks", basePrice: 499.0, volatility: 0.5 },
+  { symbol: "GOOGL", name: "Alphabet Inc.", category: "Technology", type: "stocks", basePrice: 341.7, volatility: 0.7 },
+  { symbol: "AMZN", name: "Amazon.com Inc.", category: "Retail/E-Commerce", type: "stocks", basePrice: 249.0, volatility: 0.6 },
+  { symbol: "TSLA", name: "Tesla Inc.", category: "Electric Vehicles", type: "stocks", basePrice: 381.5, volatility: 1.2 },
+  { symbol: "META", name: "Meta Platforms, Inc.", category: "Social Media", type: "stocks", basePrice: 746.5, volatility: 0.8 },
+  { symbol: "NVDA", name: "NVIDIA Corporation", category: "Semiconductors", type: "stocks", basePrice: 226.9, volatility: 1.1 },
+  { symbol: "NFLX", name: "Netflix, Inc.", category: "Media Streaming", type: "stocks", basePrice: 71.8, volatility: 0.9 },
+  { symbol: "DIS", name: "The Walt Disney Company", category: "Media Entertainment", type: "stocks", basePrice: 103.2, volatility: 0.6 },
+  { symbol: "NKE", name: "Nike, Inc.", category: "Apparel", type: "stocks", basePrice: 36.0, volatility: 0.4 },
+  { symbol: "ADBE", name: "Adobe Inc.", category: "Software", type: "stocks", basePrice: 239.0, volatility: 0.9 },
+  { symbol: "QCOM", name: "Qualcomm Incorporated", category: "Semiconductors", type: "stocks", basePrice: 194.8, volatility: 0.6 },
+  { symbol: "PYPL", name: "PayPal Holdings, Inc.", category: "Fintech", type: "stocks", basePrice: 51.9, volatility: 0.5 },
+  { symbol: "INTC", name: "Intel Corporation", category: "Semiconductors", type: "stocks", basePrice: 120.3, volatility: 0.4 },
+  { symbol: "COST", name: "Costco Wholesale", category: "Retail", type: "stocks", basePrice: 897.2, volatility: 0.6 },
+  { symbol: "VZ", name: "Verizon Communications", category: "Telecommunications", type: "stocks", basePrice: 46.4, volatility: 0.2 },
+  { symbol: "ASML", name: "ASML Holding", category: "Semiconductors", type: "stocks", basePrice: 1711.0, volatility: 1.0 },
+  { symbol: "UBER", name: "Uber Technologies", category: "Transportation", type: "stocks", basePrice: 69.1, volatility: 0.7 },
+  { symbol: "BRENT", name: "Brent Crude Oil", category: "Oil & Energy", type: "energy", basePrice: 97.1, volatility: 0.3 },
+  { symbol: "WTI", name: "WTI Crude Oil", category: "Oil & Energy", type: "energy", basePrice: 91.8, volatility: 0.3 },
+  { symbol: "XAU", name: "Gold Futures", category: "Precious Metals", type: "metals", basePrice: 4326.0, volatility: 0.8 },
+  { symbol: "XAG", name: "Silver Futures", category: "Precious Metals", type: "metals", basePrice: 65.2, volatility: 0.9 },
+  { symbol: "EURUSD", name: "Euro / US Dollar", category: "Forex", type: "forex", basePrice: 1.140, volatility: 0.08 },
+  { symbol: "USDJPY", name: "US Dollar / Japanese Yen", category: "Forex", type: "forex", basePrice: 158.2, volatility: 0.12 },
+  { symbol: "GBPUSD", name: "British Pound / US Dollar", category: "Forex", type: "forex", basePrice: 1.326, volatility: 0.08 },
+  { symbol: "UAHUSD", name: "Ukrainian Hryvnia / US Dollar", category: "Forex", type: "forex", basePrice: 44.8, volatility: 0.15 },
+  { symbol: "BTC", name: "Bitcoin", category: "Cryptocurrency", type: "crypto", basePrice: 85850.0, volatility: 1.2 },
+  { symbol: "ETH", name: "Ethereum", category: "Cryptocurrency", type: "crypto", basePrice: 2720.0, volatility: 1.5 },
+  { symbol: "SOL", name: "Solana", category: "Cryptocurrency", type: "crypto", basePrice: 116.9, volatility: 1.8 },
+  { symbol: "BNB", name: "BNB", category: "Cryptocurrency", type: "crypto", basePrice: 781.8, volatility: 1.4 },
+  { symbol: "SP500", name: "S&P 500", category: "Indices", type: "indices", basePrice: 7726.0, volatility: 0.3 },
+  { symbol: "NASDAQ", name: "Nasdaq Composite", category: "Indices", type: "indices", basePrice: 26990.0, volatility: 0.4 },
+  { symbol: "DOW", name: "Dow Jones Industrial Average", category: "Indices", type: "indices", basePrice: 51790.0, volatility: 0.3 },
+  { symbol: "US10Y", name: "US 10-Year Treasury", category: "Bonds", type: "bonds", basePrice: 5.04, volatility: 0.12 }
 ];
 
 const aliases = new Map([
@@ -65,8 +65,7 @@ const contactMessages = [];
 const marketState = new Map(marketCatalog.map((market) => [market.symbol, createMarket(market)]));
 
 function createMarket(market) {
-  const price = Math.max(0.01, market.basePrice * (1 + (Math.random() - 0.5) * (market.volatility / 100)));
-  const change = price - market.basePrice;
+  const price = market.basePrice;
   return {
     symbol: market.symbol,
     name: market.name,
@@ -75,12 +74,13 @@ function createMarket(market) {
     basePrice: market.basePrice,
     volatility: market.volatility,
     price,
-    change,
-    changePercent: market.basePrice ? (change / market.basePrice) * 100 : 0,
-    high: price * 1.01,
-    low: price * 0.99,
-    volume: Math.floor(Math.random() * 10000000),
-    history: [],
+    change: 0,
+    changePercent: 0,
+    high: price * 1.005,
+    low: price * 0.995,
+    volume: Math.floor(Math.random() * 5000000) + 1000000,
+    history: [price],
+    isReal: false,
     updatedAt: new Date().toISOString()
   };
 }
@@ -102,7 +102,9 @@ function findMarket(symbol) {
   return marketCatalog.find((market) => market.symbol.startsWith(normalized) || normalized.startsWith(market.symbol)) || null;
 }
 
+// Tick simulation used ONLY when real API data is not yet available
 function tickMarket(market) {
+  if (market.isReal) return;
   const previous = market.price;
   const tick = (Math.random() - 0.5) * previous * (market.volatility / 100);
   const price = Math.max(0.01, previous + tick);
@@ -112,47 +114,44 @@ function tickMarket(market) {
   market.changePercent = market.basePrice ? (change / market.basePrice) * 100 : 0;
   market.high = Math.max(market.high, price);
   market.low = Math.min(market.low, price);
-  market.volume += Math.floor(Math.random() * 50000);
+  market.volume += Math.floor(Math.random() * 10000);
   market.history.push(price);
   if (market.history.length > 60) market.history.shift();
   market.updatedAt = new Date().toISOString();
 }
 
-// Bug fix: getMarket now correctly operates on marketState (not the catalog entry)
 function getMarket(symbol) {
   const catalogEntry = findMarket(symbol);
   if (!catalogEntry) return null;
   const state = marketState.get(catalogEntry.symbol);
   if (!state) return null;
-  tickMarket(state);
+  if (!state.isReal) tickMarket(state);
   return clone(state);
 }
 
-// Bug fix: getMarkets now ticks each market before returning
 function getMarkets() {
   marketCatalog.forEach((m) => {
     const state = marketState.get(m.symbol);
-    if (state) tickMarket(state);
+    if (state && !state.isReal) tickMarket(state);
   });
   return marketCatalog.map((market) => clone(marketState.get(market.symbol)));
 }
 
-// Bug fix: getStocks now ticks each stock market before returning
+// Return stocks, energy, and metals for the stocks page
 function getStocks() {
   return marketCatalog
-    .filter((market) => market.type === "stocks")
+    .filter((market) => market.type === "stocks" || market.type === "energy" || market.type === "metals")
     .map((market) => {
       const state = marketState.get(market.symbol);
-      if (state) tickMarket(state);
+      if (state && !state.isReal) tickMarket(state);
       return clone(state);
     });
 }
 
-// Bug fix: getHistory now reads from marketState (not catalog entry)
 function getHistory(symbol, points = 60) {
-  const market = findMarket(symbol);
-  if (!market) return null;
-  const state = marketState.get(market.symbol);
+  const catalogEntry = findMarket(symbol);
+  if (!catalogEntry) return null;
+  const state = marketState.get(catalogEntry.symbol);
   if (!state) return null;
   const normalizedPoints = Math.min(500, Math.max(2, Number(points) || 60));
   const history = state.history.slice(-normalizedPoints);
@@ -171,10 +170,8 @@ function getHistory(symbol, points = 60) {
 
 // ── External data fetching ───────────────────────────────────────────────────
 
-// Bug fix: CoinGecko requires full coin names, not ticker symbols
 const COINGECKO_IDS = { BTC: "bitcoin", ETH: "ethereum", SOL: "solana", BNB: "binancecoin" };
 
-// Yahoo Finance ticker map: our symbol => Yahoo ticker
 const YAHOO_SYMBOLS = {
   AAPL: "AAPL", MSFT: "MSFT", GOOGL: "GOOGL", AMZN: "AMZN", TSLA: "TSLA",
   META: "META", NVDA: "NVDA", NFLX: "NFLX", DIS: "DIS", NKE: "NKE",
@@ -187,22 +184,28 @@ const YAHOO_SYMBOLS = {
   US10Y: "^TNX"
 };
 
+const USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36";
+
 async function fetchYahooPrice(yahooTicker) {
   const url = `https://query1.finance.yahoo.com/v8/finance/chart/${encodeURIComponent(yahooTicker)}?interval=1m&range=1d`;
   const response = await fetch(url, {
-    headers: { "User-Agent": "Mozilla/5.0" },
-    signal: AbortSignal.timeout(6000)
+    headers: { "User-Agent": USER_AGENT },
+    signal: AbortSignal.timeout(5000)
   });
   if (!response.ok) return null;
   const payload = await response.json();
-  const meta = payload && payload.chart && payload.chart.result && payload.chart.result[0] && payload.chart.result[0].meta;
+  const meta = payload?.chart?.result?.[0]?.meta;
   if (!meta) return null;
   const price = meta.regularMarketPrice;
-  const prevClose = meta.previousClose != null ? meta.previousClose
-    : meta.chartPreviousClose != null ? meta.chartPreviousClose
-    : meta.regularMarketPreviousClose;
+  const prevClose = meta.previousClose ?? meta.chartPreviousClose ?? meta.regularMarketPreviousClose;
   if (!Number.isFinite(price) || price <= 0) return null;
-  return { price, prevClose: prevClose || price };
+  return {
+    price,
+    prevClose: (Number.isFinite(prevClose) && prevClose > 0) ? prevClose : price,
+    high: meta.regularMarketDayHigh || meta.dayHigh,
+    low: meta.regularMarketDayLow || meta.dayLow,
+    volume: meta.regularMarketVolume || meta.volume
+  };
 }
 
 async function fetchCryptoData() {
@@ -219,78 +222,91 @@ async function fetchGoldSilverPrice(symbol) {
   });
   if (!response.ok) return null;
   const payload = await response.json();
-  const value = Number(
-    payload && (payload.price != null ? payload.price
-      : payload.data && payload.data.price != null ? payload.data.price
-      : null)
-  );
+  const value = Number(payload?.price ?? payload?.data?.price);
   return Number.isFinite(value) && value > 0 ? value : null;
 }
 
-function applyExternalPrice(symbol, price, prevClose) {
+function applyRealPrice(symbol, price, prevClose, high, low, volume) {
   const state = marketState.get(symbol);
   if (!state || !Number.isFinite(price) || price <= 0) return;
+
   state.price = price;
-  const ref = (prevClose && Number.isFinite(prevClose) && prevClose > 0) ? prevClose : state.basePrice;
+  const ref = (Number.isFinite(prevClose) && prevClose > 0) ? prevClose : state.basePrice;
+  state.basePrice = ref;
   state.change = price - ref;
   state.changePercent = ref ? ((price - ref) / ref) * 100 : 0;
-  if (prevClose && Number.isFinite(prevClose) && prevClose > 0) {
-    state.basePrice = prevClose;
-  }
-  state.high = Math.max(state.high, price);
-  state.low = Math.min(state.low, price);
+  state.high = Number.isFinite(high) && high > 0 ? high : Math.max(state.high, price);
+  state.low = Number.isFinite(low) && low > 0 ? low : Math.min(state.low, price);
+  if (Number.isFinite(volume) && volume > 0) state.volume = volume;
+  
   state.history.push(price);
   if (state.history.length > 60) state.history.shift();
+  state.isReal = true;
   state.updatedAt = new Date().toISOString();
 }
 
-async function refreshExternalMarkets() {
-  const tasks = [];
+let isRefreshing = false;
 
-  // Crypto via CoinGecko (correct coin IDs)
-  tasks.push(
-    fetchCryptoData().then((data) => {
-      if (!data) return;
-      for (const [sym, geckoId] of Object.entries(COINGECKO_IDS)) {
-        const entry = data[geckoId];
-        if (!entry) continue;
-        const price = entry.usd;
-        const change24h = entry.usd_24h_change;
-        if (!Number.isFinite(price) || price <= 0) continue;
-        const prevClose = Number.isFinite(change24h) ? price / (1 + change24h / 100) : null;
-        applyExternalPrice(sym, price, prevClose);
+async function refreshAllMarkets() {
+  if (isRefreshing) return;
+  isRefreshing = true;
+
+  try {
+    // 1. Fetch Crypto (CoinGecko)
+    try {
+      const cryptoData = await fetchCryptoData();
+      if (cryptoData) {
+        for (const [sym, geckoId] of Object.entries(COINGECKO_IDS)) {
+          const coin = cryptoData[geckoId];
+          if (!coin || !Number.isFinite(coin.usd)) continue;
+          const price = coin.usd;
+          const ch24h = coin.usd_24h_change;
+          const prevClose = Number.isFinite(ch24h) ? price / (1 + ch24h / 100) : price;
+          applyRealPrice(sym, price, prevClose);
+        }
       }
-    }).catch(() => undefined)
-  );
+    } catch (_) {}
 
-  // Metals: gold-api first, Yahoo Finance as fallback
-  for (const sym of ["XAU", "XAG"]) {
-    tasks.push(
-      fetchGoldSilverPrice(sym).then(async (price) => {
-        if (price) { applyExternalPrice(sym, price, null); return; }
-        const yahooTicker = YAHOO_SYMBOLS[sym];
-        if (!yahooTicker) return;
-        const d = await fetchYahooPrice(yahooTicker).catch(() => null);
-        if (d) applyExternalPrice(sym, d.price, d.prevClose);
-      }).catch(() => undefined)
+    // 2. Fetch Metals (Gold-API)
+    for (const sym of ["XAU", "XAG"]) {
+      try {
+        const spot = await fetchGoldSilverPrice(sym);
+        if (spot) {
+          applyRealPrice(sym, spot, null);
+        }
+      } catch (_) {}
+    }
+
+    // 3. Fetch Yahoo Finance symbols in small concurrent chunks (6 at a time)
+    const yahooSymbolsList = Object.keys(YAHOO_SYMBOLS).filter(
+      (s) => !COINGECKO_IDS[s]
     );
-  }
 
-  // Stocks, forex, oil, indices via Yahoo Finance
-  const yahooOnlySymbols = Object.keys(YAHOO_SYMBOLS).filter(
-    (s) => !COINGECKO_IDS[s] && s !== "XAU" && s !== "XAG"
-  );
-  for (const sym of yahooOnlySymbols) {
-    const yahooTicker = YAHOO_SYMBOLS[sym];
-    tasks.push(
-      fetchYahooPrice(yahooTicker).then((d) => {
-        if (d) applyExternalPrice(sym, d.price, d.prevClose);
-      }).catch(() => undefined)
-    );
+    const chunkSize = 6;
+    for (let i = 0; i < yahooSymbolsList.length; i += chunkSize) {
+      const chunk = yahooSymbolsList.slice(i, i + chunkSize);
+      await Promise.all(
+        chunk.map(async (sym) => {
+          try {
+            const data = await fetchYahooPrice(YAHOO_SYMBOLS[sym]);
+            if (data) {
+              applyRealPrice(sym, data.price, data.prevClose, data.high, data.low, data.volume);
+            }
+          } catch (_) {}
+        })
+      );
+    }
+  } finally {
+    isRefreshing = false;
   }
-
-  await Promise.all(tasks);
 }
+
+// Background auto-refresh every 15 seconds
+setInterval(refreshAllMarkets, 15000);
+// Initial fetch on boot
+refreshAllMarkets().catch(() => {});
+
+// ── HTTP API & Static Server ─────────────────────────────────────────────────
 
 function setCommonHeaders(res) {
   res.setHeader("Access-Control-Allow-Origin", "*");
@@ -409,20 +425,17 @@ async function handleApi(req, res, url) {
   }
 
   if (req.method === "GET" && url.pathname === "/api/markets") {
-    await refreshExternalMarkets().catch(() => undefined);
     sendJson(res, 200, { data: getMarkets(), updatedAt: new Date().toISOString() });
     return;
   }
 
   if (req.method === "GET" && url.pathname === "/api/stocks") {
-    await refreshExternalMarkets().catch(() => undefined);
     sendJson(res, 200, { data: getStocks(), updatedAt: new Date().toISOString() });
     return;
   }
 
   const groupMatch = url.pathname.match(/^\/api\/(stocks|forex|crypto|indices|bonds|energy|metals)$/);
   if (req.method === "GET" && groupMatch) {
-    await refreshExternalMarkets().catch(() => undefined);
     const type = groupMatch[1];
     const data = marketCatalog
       .filter((market) => market.type === type)
@@ -444,7 +457,6 @@ async function handleApi(req, res, url) {
 
   const marketMatchSimple = url.pathname.match(/^\/api\/(?:market|markets)\/([^/]+)$/);
   if (req.method === "GET" && marketMatchSimple) {
-    await refreshExternalMarkets().catch(() => undefined);
     const market = getMarket(marketMatchSimple[1]);
     if (!market) {
       sendError(res, 404, "Market not found");

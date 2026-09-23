@@ -977,71 +977,41 @@ function initMarket() {
   const symbols = Object.keys(stockData);
   symbols.forEach(symbol => {
     const base = stockData[symbol].basePrice || 100;
-    const startPrice = base * (1 + (Math.random() - 0.5) * 0.01);
     marketData[symbol] = {
-      price: startPrice,
+      symbol: stockData[symbol].symbol,
+      name: stockData[symbol].name,
+      price: base,
       change: 0,
       changePercent: 0,
-      high: startPrice * 1.02,
-      low: startPrice * 0.98,
-      volume: Math.floor(Math.random() * 10000000)
+      high: base,
+      low: base,
+      volume: 0
     };
-    priceHistory[symbol] = Array.from({ length: 60 }, () => startPrice + (Math.random() - 0.5) * base * 0.005);
+    priceHistory[symbol] = [base];
   });
   renderCards();
   renderTable();
 }
 
-function updateMarket() {
-  const symbols = Object.keys(stockData);
-  symbols.forEach(symbol => {
-    const prev = marketData[symbol].price;
-    const vol = stockData[symbol].volatility || 0.5;
-    const tick = (Math.random() - 0.5) * prev * (vol / 100);
-    const price = Math.max(prev * 0.5, prev + tick);
-    const change = price - stockData[symbol].basePrice;
-    const changePercent = stockData[symbol].basePrice ? (change / stockData[symbol].basePrice) * 100 : 0;
-    const high = Math.max(marketData[symbol].high, price);
-    const low = Math.min(marketData[symbol].low, price);
-    const volume = marketData[symbol].volume + Math.floor(Math.random() * 50000);
-
-    marketData[symbol] = {
-      price,
-      change,
-      changePercent,
-      high,
-      low,
-      volume
-    };
-
-    const history = priceHistory[symbol] || [];
-    history.push(price);
-    if (history.length > 60) history.shift();
-    priceHistory[symbol] = history;
-  });
-
-  renderCards();
-  renderTable();
-  renderChart();
+function formatNumber(num, decimals = 2) {
+  if (num === null || num === undefined || Number.isNaN(num)) return '--';
+  return Number(num).toLocaleString('en-US', { minimumFractionDigits: decimals, maximumFractionDigits: decimals });
 }
-
-    function formatNumber(num, decimals = 2) {
-      if (num === null || num === undefined) return '--';
-      return num.toLocaleString('en-US', { minimumFractionDigits: decimals, maximumFractionDigits: decimals });
-    }
 
 let chartMode = 'line';
 let timeRange = '1m';
 
 function setChartMode(mode) {
   chartMode = mode;
-  document.getElementById('chartRangeLabel').textContent = 'Mode: ' + mode.toUpperCase();
+  const label = document.getElementById('chartRangeLabel');
+  if (label) label.textContent = 'Mode: ' + mode.toUpperCase();
   renderChart();
 }
 
 function setTimeRange(range) {
   timeRange = range;
-  document.getElementById('chartRangeLabel').textContent = 'Range: ' + range.toUpperCase();
+  const label = document.getElementById('chartRangeLabel');
+  if (label) label.textContent = 'Range: ' + range.toUpperCase();
   renderChart();
 }
 
@@ -1050,7 +1020,6 @@ function renderChart() {
   if (!lineEl) return;
 
   const mode = (typeof chartMode === 'string') ? chartMode : 'line';
-  const rangeLabel = (typeof timeRange === 'string') ? timeRange : '1m';
   if (mode === 'area') {
     lineEl.setAttribute('fill', 'rgba(37,99,235,0.15)');
   } else {
@@ -1060,12 +1029,10 @@ function renderChart() {
   const cards = Array.from(document.querySelectorAll('.stock-card'));
   const visibleCards = cards.filter(card => currentFilter === 'all' || card.getAttribute('data-category') === currentFilter);
   const symText = visibleCards[0] ? visibleCards[0].querySelector('.stock-card__symbol').textContent : null;
-  const symbolKey = symText ? Object.keys(stockData).find(key => stockData[key].symbol === symText) || (symText || '').toLowerCase().replace(/[^a-z]/g, '').substring(0, 4) : Object.keys(stockData)[0];
-  const history = priceHistory[symbolKey] || [];
-  if (!history.length) {
-    const base = stockData[symbolKey] ? stockData[symbolKey].basePrice : 100;
-    for (let i = 0; i < 20; i++) history.push(base + (Math.random() - 0.5) * base * 0.01);
-  }
+  const symbolKey = symText ? Object.keys(stockData).find(key => stockData[key].symbol === symText) : Object.keys(stockData)[0];
+  const history = (symbolKey && priceHistory[symbolKey]) ? priceHistory[symbolKey] : [];
+
+  if (!history.length) return;
   const min = Math.min(...history);
   const max = Math.max(...history);
   const range = max - min || 1;
@@ -1077,131 +1044,143 @@ function renderChart() {
   lineEl.setAttribute('d', `M ${points.join(' L ')}`);
 }
 
-    function renderCards() {
-      document.querySelectorAll('.stock-card').forEach(card => {
-        const cardCategory = card.getAttribute('data-category');
-        const symbolText = card.querySelector('.stock-card__symbol').textContent;
-        let symbolKey = symbolText.toLowerCase().replace(/[^a-z]/g, '').substring(0, 4);
-        for (const key in stockData) {
-          if (stockData[key].symbol === symbolText) {
-            symbolKey = key;
-            break;
-          }
-        }
-        const priceEl = document.getElementById(`price-${symbolKey}`);
-        const changeEl = document.getElementById(`change-${symbolKey}`);
-
-        if (priceEl && changeEl) {
-          const data = marketData[symbolKey] || {
-            price: stockData[symbolKey].basePrice,
-            change: 0,
-            changePercent: 0,
-            high: stockData[symbolKey].basePrice * 1.05,
-            low: stockData[symbolKey].basePrice * 0.95,
-            volume: Math.floor(Math.random() * 10000000)
-          };
-          priceEl.textContent = formatNumber(data.price);
-          const delta = data.price - stockData[symbolKey].basePrice;
-          const color = delta >= 0 ? '#16a34a' : '#dc2626';
-          changeEl.textContent = `${delta >= 0 ? '+' : ''}${formatNumber(delta)} (${delta >= 0 ? '+' : ''}${data.changePercent.toFixed(2)}%)`;
-          changeEl.style.color = color;
-        }
-
-        if (currentFilter !== 'all' && cardCategory !== currentFilter) {
-          card.classList.add('hidden');
-        } else {
-          card.classList.remove('hidden');
-        }
-      });
-    }
-
-    function renderTable() {
-      const cards = Array.from(document.querySelectorAll('.stock-card'));
-      const visibleCards = cards.filter(card => {
-        if (currentFilter === 'all') return true;
-        return card.getAttribute('data-category') === currentFilter;
-      });
-      const visibleSymbols = visibleCards.map(card => {
-        const symText = card.querySelector('.stock-card__symbol').textContent;
-        for (const key in stockData) {
-          if (stockData[key].symbol === symText) return key;
-        }
-        return symText.toLowerCase().replace(/[^a-z]/g, '').substring(0,4);
-      });
-
-      const tbody = document.getElementById('dataTableBody');
-      const titleEl = document.getElementById('modalTitle');
-
-      if (titleEl) {
-        titleEl.textContent = `${visibleSymbols[0] ? (stockData[visibleSymbols[0]] ? stockData[visibleSymbols[0]].symbol : visibleSymbols[0].toUpperCase()) : 'Market'} Data`;
-      }
-
-      tbody.innerHTML = visibleSymbols.slice(0, 10).map(symbol => {
-        const data = marketData[symbol] || {
-          symbol: stockData[symbol] ? stockData[symbol].symbol : symbol.toUpperCase(),
-          name: stockData[symbol] ? stockData[symbol].name : symbol,
-          price: stockData[symbol] ? stockData[symbol].basePrice : 0,
-          change: 0,
-          changePercent: 0,
-          high: (stockData[symbol] ? stockData[symbol].basePrice : 0) * 1.05,
-          low: (stockData[symbol] ? stockData[symbol].basePrice : 0) * 0.95,
-          volume: Math.floor(Math.random() * 10000000)
-        };
-
-        return `
-          <tr>
-            <td><span class="data-value">${data.symbol}</span></td>
-            <td>${data.name}</td>
-            <td>${formatNumber(data.price)}</td>
-            <td class="${data.changePercent >= 0 ? 'positive' : 'negative'}">${data.changePercent >= 0 ? '+' : ''}${data.changePercent.toFixed(2)}%</td>
-            <td>${formatNumber(data.high)}</td>
-            <td>${formatNumber(data.low)}</td>
-            <td>${formatNumber(data.volume)}</td>
-          </tr>
-        `;
-      }).join('');
-      renderChart();
-    }
-
-    async function fetchRealTimeData() {
-      try {
-        const data = await MarketPulseAPI.getStocks();
-        data.forEach((item) => {
-          const key = item.symbol.toLowerCase();
-          stockData[key] = {
-            ...stockData[key],
-            name: item.name,
-            symbol: item.symbol,
-            category: item.category,
-            basePrice: item.basePrice,
-            volatility: item.volatility
-          };
-          marketData[key] = {
-            ...item,
-            high: item.high,
-            low: item.low,
-            volume: item.volume
-          };
-          priceHistory[key] = priceHistory[key] || Array.from({ length: 60 }, () => item.price * (1 + (Math.random() - 0.5) * 0.005));
-        });
-        renderCards();
-        renderTable();
-        renderChart();
-      } catch (error) {
-        console.warn("Failed to refresh market data:", error);
-        initMarket();
+function renderCards() {
+  document.querySelectorAll('.stock-card').forEach(card => {
+    const cardCategory = card.getAttribute('data-category');
+    const symbolText = card.querySelector('.stock-card__symbol').textContent;
+    let symbolKey = null;
+    for (const key in stockData) {
+      if (stockData[key].symbol === symbolText) {
+        symbolKey = key;
+        break;
       }
     }
+    if (!symbolKey) return;
 
-    // tick() was unused — fetchRealTimeData() is now called directly on a timer
+    const priceEl = document.getElementById(`price-${symbolKey}`);
+    const changeEl = document.getElementById(`change-${symbolKey}`);
+
+    if (priceEl && changeEl && marketData[symbolKey]) {
+      const data = marketData[symbolKey];
+      priceEl.textContent = formatNumber(data.price);
+      const isPositive = data.change >= 0;
+      const color = isPositive ? '#16a34a' : '#dc2626';
+      const sign = isPositive ? '+' : '';
+      changeEl.textContent = `${sign}${formatNumber(data.change)} (${sign}${Number(data.changePercent || 0).toFixed(2)}%)`;
+      changeEl.style.color = color;
+    }
+
+    if (currentFilter !== 'all' && cardCategory !== currentFilter) {
+      card.classList.add('hidden');
+    } else {
+      card.classList.remove('hidden');
+    }
+  });
+}
+
+function renderTable() {
+  const cards = Array.from(document.querySelectorAll('.stock-card'));
+  const visibleCards = cards.filter(card => {
+    if (currentFilter === 'all') return true;
+    return card.getAttribute('data-category') === currentFilter;
+  });
+  const visibleSymbols = visibleCards.map(card => {
+    const symText = card.querySelector('.stock-card__symbol').textContent;
+    for (const key in stockData) {
+      if (stockData[key].symbol === symText) return key;
+    }
+    return null;
+  }).filter(Boolean);
+
+  const tbody = document.getElementById('dataTableBody');
+  const titleEl = document.getElementById('modalTitle');
+
+  if (titleEl && visibleSymbols[0] && stockData[visibleSymbols[0]]) {
+    titleEl.textContent = `${stockData[visibleSymbols[0]].symbol} Data`;
+  }
+
+  if (tbody) {
+    tbody.innerHTML = visibleSymbols.map(symbol => {
+      const data = marketData[symbol] || {
+        symbol: stockData[symbol].symbol,
+        name: stockData[symbol].name,
+        price: stockData[symbol].basePrice,
+        change: 0,
+        changePercent: 0,
+        high: stockData[symbol].basePrice,
+        low: stockData[symbol].basePrice,
+        volume: 0
+      };
+
+      const isPositive = data.changePercent >= 0;
+      const sign = isPositive ? '+' : '';
+
+      return `
+        <tr>
+          <td><span class="data-value">${data.symbol}</span></td>
+          <td>${data.name}</td>
+          <td>${formatNumber(data.price)}</td>
+          <td class="${isPositive ? 'positive' : 'negative'}">${sign}${Number(data.changePercent || 0).toFixed(2)}%</td>
+          <td>${formatNumber(data.high)}</td>
+          <td>${formatNumber(data.low)}</td>
+          <td>${formatNumber(data.volume, 0)}</td>
+        </tr>
+      `;
+    }).join('');
+  }
+  renderChart();
+}
+
+async function fetchRealTimeData() {
+  try {
+    const data = await MarketPulseAPI.getMarkets();
+    if (!Array.isArray(data)) return;
+
+    data.forEach((item) => {
+      let symbolKey = null;
+      for (const key in stockData) {
+        if (stockData[key].symbol === item.symbol) {
+          symbolKey = key;
+          break;
+        }
+      }
+      if (!symbolKey) return;
+
+      marketData[symbolKey] = {
+        symbol: item.symbol,
+        name: item.name,
+        price: item.price,
+        change: item.change,
+        changePercent: item.changePercent,
+        high: item.high,
+        low: item.low,
+        volume: item.volume
+      };
+
+      if (!priceHistory[symbolKey] || priceHistory[symbolKey].length <= 1) {
+        priceHistory[symbolKey] = (Array.isArray(item.history) && item.history.length > 0)
+          ? [...item.history]
+          : [item.price];
+      } else {
+        priceHistory[symbolKey].push(item.price);
+        if (priceHistory[symbolKey].length > 60) priceHistory[symbolKey].shift();
+      }
+    });
+
+    renderCards();
+    renderTable();
+    renderChart();
+  } catch (error) {
+    console.warn("Failed to refresh real-time market data:", error);
+  }
+}
 
 document.addEventListener('DOMContentLoaded', () => {
   initMarket();
-  // Bug fix: replace random-simulation tick with real API fetch every 15s
+  // Fetch real-time market data from API immediately
   fetchRealTimeData();
-  setInterval(fetchRealTimeData, 15000);
-  // Keep local simulation ticking every 2s for smooth visual updates between API calls
-  setInterval(updateMarket, 2000);
+  // Auto-refresh real-time data every 10 seconds
+  setInterval(fetchRealTimeData, 10000);
 
       document.querySelectorAll('.filter-btn').forEach(btn => {
         btn.addEventListener('click', () => {
