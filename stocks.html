@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="uk">
 <head>
   <meta charset="UTF-8">
@@ -1179,8 +1179,8 @@ document.addEventListener('DOMContentLoaded', () => {
   initMarket();
   // Fetch real-time market data from API immediately
   fetchRealTimeData();
-  // Auto-refresh real-time data every 10 seconds
-  setInterval(fetchRealTimeData, 10000);
+  // Auto-refresh real-time data every 1 second
+  setInterval(fetchRealTimeData, 1000);
 
       document.querySelectorAll('.filter-btn').forEach(btn => {
         btn.addEventListener('click', () => {
