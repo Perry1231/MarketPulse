@@ -381,9 +381,9 @@
     });
 
     const state = {
-      gold: { price: null, change: 0, changePercent: 0, history: [] },
-      oil: { price: null, change: 0, changePercent: 0, history: [] },
-      crypto: { price: null, change: 0, changePercent: 0, label: "BTC", history: [] }
+      gold: { price: null, change: 0, changePercent: 0, isReal: false, history: [] },
+      oil: { price: null, change: 0, changePercent: 0, isReal: false, history: [] },
+      crypto: { price: null, change: 0, changePercent: 0, label: "BTC", isReal: false, history: [] }
     };
 
     function fmt(n) {
@@ -420,8 +420,16 @@
     function updateStatus(id, ok) {
       const el = document.getElementById(id);
       if (!el) return;
-      el.textContent = ok ? "Live" : "Loading...";
-      el.className = "tile-status" + (ok ? " success" : "");
+      if (lastFetchFailed) {
+        el.textContent = "API error";
+        el.className = "tile-status error";
+      } else if (ok) {
+        el.textContent = "Live";
+        el.className = "tile-status success";
+      } else {
+        el.textContent = "Loading...";
+        el.className = "tile-status";
+      }
     }
 
     function renderOil() {
@@ -439,7 +447,7 @@
         }
       }
       renderSparkline("oilLine", oil.history, oil.changePercent >= 0);
-      updateStatus("oilStatus", oil.price !== null);
+      updateStatus("oilStatus", oil.isReal);
     }
 
     function renderGold() {
@@ -457,7 +465,7 @@
         }
       }
       renderSparkline("goldLine", gold.history, gold.changePercent >= 0);
-      updateStatus("goldStatus", gold.price !== null);
+      updateStatus("goldStatus", gold.isReal);
     }
 
     function renderCrypto() {
@@ -475,7 +483,7 @@
         }
       }
       renderSparkline("cryptoLine", crypto.history, crypto.changePercent >= 0);
-      updateStatus("cryptoStatus", crypto.price !== null);
+      updateStatus("cryptoStatus", crypto.isReal);
     }
 
     function renderAll() {
@@ -484,66 +492,58 @@
       renderOil();
     }
 
-    // Real-time API fetch every 1 second
+    // Real data from the local API (backed by Yahoo Finance / CoinGecko / gold-api)
     async function updateRealTimePrices() {
       try {
         const markets = await MarketPulseAPI.getMarkets();
         if (!Array.isArray(markets)) return;
 
-        // 1. Oil (WTI)
-        const wti = markets.find(m => m.symbol === "WTI");
-        if (wti && wti.price > 0) {
-          state.oil.price = wti.price;
-          state.oil.change = wti.change;
-          state.oil.changePercent = wti.changePercent;
-          if (state.oil.history.length <= 1 && Array.isArray(wti.history) && wti.history.length > 0) {
-            state.oil.history = [...wti.history];
-          } else {
-            state.oil.history.push(wti.price);
-            if (state.oil.history.length > 60) state.oil.history.shift();
-          }
-        }
+        const tiles = [
+          { key: "oil", symbol: "WTI", label: "WTI" },
+          { key: "gold", symbol: "XAU", label: "XAU" },
+          { key: "crypto", symbol: "BTC", label: "BTC" }
+        ];
 
-        // 2. Gold (XAU)
-        const xau = markets.find(m => m.symbol === "XAU");
-        if (xau && xau.price > 0) {
-          state.gold.price = xau.price;
-          state.gold.change = xau.change;
-          state.gold.changePercent = xau.changePercent;
-          if (state.gold.history.length <= 1 && Array.isArray(xau.history) && xau.history.length > 0) {
-            state.gold.history = [...xau.history];
+        tiles.forEach((tile) => {
+          const market = markets.find((m) => m.symbol === tile.symbol);
+          if (!market) return;
+          const s = state[tile.key];
+          if (market.isReal && market.price > 0) {
+            s.price = market.price;
+            s.change = market.change;
+            s.changePercent = market.changePercent;
+            s.label = tile.label;
+            s.isReal = true;
+            // Seed the sparkline with the server's real intraday history once,
+            // then append each polled price that differs from the last one
+            const serverHistory = Array.isArray(market.history) ? market.history : [];
+            if (s.history.length < 2 && serverHistory.length > 1) {
+              s.history = [...serverHistory];
+            } else if (!s.history.length || s.history[s.history.length - 1] !== market.price) {
+              s.history.push(market.price);
+              if (s.history.length > 60) s.history.shift();
+            }
           } else {
-            state.gold.history.push(xau.price);
-            if (state.gold.history.length > 60) state.gold.history.shift();
+            s.isReal = false;
           }
-        }
-
-        // 3. Crypto (BTC)
-        const btc = markets.find(m => m.symbol === "BTC");
-        if (btc && btc.price > 0) {
-          state.crypto.price = btc.price;
-          state.crypto.change = btc.change;
-          state.crypto.changePercent = btc.changePercent;
-          state.crypto.label = "BTC";
-          if (state.crypto.history.length <= 1 && Array.isArray(btc.history) && btc.history.length > 0) {
-            state.crypto.history = [...btc.history];
-          } else {
-            state.crypto.history.push(btc.price);
-            if (state.crypto.history.length > 60) state.crypto.history.shift();
-          }
-        }
+        });
 
         renderAll();
+        lastFetchFailed = false;
       } catch (error) {
+        lastFetchFailed = true;
         console.warn("Failed to fetch real-time market data:", error);
       }
     }
 
+    let lastFetchFailed = false;
+
     // Initial fetch immediately
     updateRealTimePrices();
 
-    // Auto-refresh real-time data EVERY SECOND (1000 ms)
-    setInterval(updateRealTimePrices, 1000);
+    // Auto-refresh real-time data every 3 seconds
+    // (the server itself re-fetches live prices from the external APIs every 30s)
+    setInterval(updateRealTimePrices, 3000);
   </script>
 </body>
 </html>

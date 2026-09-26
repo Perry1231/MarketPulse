@@ -15,7 +15,7 @@
     getMarkets: () => request("/markets"),
     getMarket: (symbol) => request(`/market/${encodeURIComponent(symbol)}`),
     getStocks: () => request("/stocks"),
-    getHistory: (symbol, points = 60) => request(`/markets/${encodeURIComponent(symbol)}/history?points=${points}`),
+    getHistory: (symbol, range = "1d") => request(`/markets/${encodeURIComponent(symbol)}/history?range=${encodeURIComponent(range)}`),
     postContact: (data) => request("/contact", {
       method: "POST",
       headers: { "Content-Type": "application/json" },

@@ -2,7 +2,7 @@
 <html lang="uk">
 <head>
   <meta charset="UTF-8">
-  <title>Stocks - Market Pulse</title>
+  <title>Indices - Market Pulse</title>
   <style>
     * { margin: 0; padding: 0; }
     body {
@@ -41,9 +41,11 @@
     .lang-dropdown.show { display: block; }
     .lang-dropdown a { display: block; padding: 0.6rem 1rem; color: #fff; text-decoration: none; font-size: 0.9rem; }
     .lang-dropdown a:hover { background: #374151; }
+
   </style>
 </head>
 <body>
+
   <nav class="nav" id="nav">
     <a href="index.html" data-i18n-key="home">Home</a>
     <a href="about.html" data-i18n-key="about">About</a>
@@ -71,27 +73,52 @@
     </p>
   </footer>
 
-  <script>window.MP_CONFIG = {
-    title: "Stocks",
-    symbols: ["AAPL", "MSFT", "GOOGL", "AMZN", "TSLA", "META", "NVDA", "NFLX", "DIS", "NKE", "ADBE", "QCOM", "PYPL", "INTC", "COST", "VZ", "ASML", "UBER", "BRENT", "WTI", "NATGAS", "XAU", "XAG", "PLATIN", "COPPER"],
-    filters: [
-      { key: "all", label: { en: "All", de: "Alle", fr: "Tout", ja: "全て", uk: "Усі" } },
-      { key: "tech", label: { en: "Tech", de: "Technologie", fr: "Technologie", ja: "テクノロジー", uk: "Технології" }, categories: ["Technology", "Semiconductors", "Software", "Fintech", "Electric Vehicles", "Social Media", "Media Streaming"] },
-      { key: "retail", label: { en: "Retail", de: "Einzelhandel", fr: "Commerce", ja: "小売", uk: "Рітейл" }, categories: ["Retail", "Retail/E-Commerce", "Media Entertainment", "Apparel", "Transportation"] },
-      { key: "energy", label: { en: "Energy", de: "Energie", fr: "Énergie", ja: "エネルギー", uk: "Енергія" }, categories: ["Oil & Energy"] },
-      { key: "metals", label: { en: "Metals", de: "Metalle", fr: "Métaux", ja: "金属", uk: "Метали" }, categories: ["Precious Metals", "Industrial Metals"] }
-    ]
-  };</script>
+  <script>window.MP_CONFIG = { title: "Indices", symbols: ["SP500","NASDAQ","DOW","RUSSELL","VIX"] };</script>
   <script src="api.js"></script>
   <script src="market-page.js"></script>
   <script>
     const translations = {
-      en: { home: "Home", about: "About", services: "Services", lang: "🌐 EN", filter_title: "Stocks", footer_desc: "Market Pulse — quick view of stocks, crypto, forex, oil, gold, bonds and indices." },
-      de: { home: "Startseite", about: "Über uns", services: "Dienstleistungen", lang: "🌐 DE", filter_title: "Aktien", footer_desc: "Market Pulse — schneller Überblick über Aktien, Krypto, Forex, Öl, Gold, Anleihen und Indizes." },
-      fr: { home: "Accueil", about: "À propos", services: "Services", lang: "🌐 FR", filter_title: "Actions", footer_desc: "Market Pulse — vue rapide des actions, crypto, forex, pétrole, or, obligations et indices." },
-      ja: { home: "ホーム", about: "概要", services: "サービス", lang: "🌐 JA", filter_title: "株式", footer_desc: "Market Pulse — 株式、暗号通貨、為替、原油、金、債券、指数の概要。" },
-      uk: { home: "Головна", about: "Про нас", services: "Послуги", lang: "🌐 UA", filter_title: "Акції", footer_desc: "Market Pulse — швидкий огляд акцій, криптовалюти, forex, нафти, золота, облігацій та індексів." }
-    };
+  en: {
+    home: "Home",
+    about: "About",
+    services: "Services",
+    lang: "🌐 EN",
+    filter_title: "Indices",
+    footer_desc: "Market Pulse — quick view of stocks, crypto, forex, oil, gold, bonds and indices."
+  },
+  de: {
+    home: "Startseite",
+    about: "Über uns",
+    services: "Dienstleistungen",
+    lang: "🌐 DE",
+    filter_title: "Indizes",
+    footer_desc: "Market Pulse — schneller Überblick über Aktien, Krypto, Forex, Öl, Gold, Anleihen und Indizes."
+  },
+  fr: {
+    home: "Accueil",
+    about: "À propos",
+    services: "Services",
+    lang: "🌐 FR",
+    filter_title: "Indices",
+    footer_desc: "Market Pulse — vue rapide des actions, crypto, forex, pétrole, or, obligations et indices."
+  },
+  ja: {
+    home: "ホーム",
+    about: "概要",
+    services: "サービス",
+    lang: "🌐 JA",
+    filter_title: "指数",
+    footer_desc: "Market Pulse — 株式、暗号通貨、為替、原油、金、債券、指数の概要。"
+  },
+  uk: {
+    home: "Головна",
+    about: "Про нас",
+    services: "Послуги",
+    lang: "🌐 UA",
+    filter_title: "Індекси",
+    footer_desc: "Market Pulse — швидкий огляд акцій, криптовалюти, forex, нафти, золота, облігацій та індексів."
+  }
+};
 
     function applyLanguage(lang) {
       document.documentElement.lang = lang;
@@ -143,6 +170,7 @@
       }
       lastScroll = currentScroll;
     });
+
   </script>
 </body>
 </html>
