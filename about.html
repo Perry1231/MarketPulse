@@ -72,7 +72,31 @@ body { background: #ffffff; font-family: Arial, sans-serif; min-height: 200vh; }
   font-size: 0.9rem;
 }
 .lang-dropdown a:hover { background: #374151; }
+
+.about-section {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 160px 2rem 3rem;
+}
+.about-card {
+  background: #f9fafb;
+  border: 1px solid #e5e7eb;
+  border-radius: 16px;
+  padding: 2rem 2.25rem;
+}
+.about-card h1 {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: #111827;
+  margin-bottom: 1rem;
+}
+.about-card p {
+  color: #4b5563;
+  font-size: 1rem;
+  line-height: 1.7;
+}
 </style>
+  <script src="theme.js"></script>
 </head>
 <body>
 <nav class="nav" id="nav">
@@ -91,6 +115,13 @@ body { background: #ffffff; font-family: Arial, sans-serif; min-height: 200vh; }
   </div>
 </nav>
 
+<section class="about-section">
+  <div class="about-card">
+    <h1 data-i18n-key="about_title">About Market Pulse</h1>
+    <p data-i18n-key="about_text">Market Pulse is a fast, lightweight dashboard for tracking global markets — stocks, forex, crypto, oil, gold, bonds and indices — with live prices, interactive charts and real-time data from trusted financial sources.</p>
+  </div>
+</section>
+
 <script>
 const translations = {
   en: {
@@ -98,35 +129,45 @@ const translations = {
     about: "About",
     services: "Services",
     account: "Account",
-    lang: "🌐 EN"
+    lang: "🌐 EN",
+    about_title: "About Market Pulse",
+    about_text: "Market Pulse is a fast, lightweight dashboard for tracking global markets — stocks, forex, crypto, oil, gold, bonds and indices — with live prices, interactive charts and real-time data from trusted financial sources."
   },
   de: {
     home: "Startseite",
     about: "Über uns",
     services: "Dienstleistungen",
     account: "Konto",
-    lang: "🌐 DE"
+    lang: "🌐 DE",
+    about_title: "Über Market Pulse",
+    about_text: "Market Pulse ist ein schnelles, übersichtliches Dashboard für globale Märkte — Aktien, Devisen, Krypto, Öl, Gold, Anleihen und Indizes — mit Live-Kursen, interaktiven Charts und Echtzeitdaten aus verlässlichen Finanzquellen."
   },
   fr: {
     home: "Accueil",
     about: "À propos",
     services: "Services",
     account: "Compte",
-    lang: "🌐 FR"
+    lang: "🌐 FR",
+    about_title: "À propos de Market Pulse",
+    about_text: "Market Pulse est un tableau de bord rapide et léger pour suivre les marchés mondiaux — actions, devises, crypto, pétrole, or, obligations et indices — avec des cours en direct, des graphiques interactifs et des données en temps réel de sources financières fiables."
   },
   ja: {
     home: "ホーム",
     about: "概要",
     services: "サービス",
     account: "アカウント",
-    lang: "🌐 JA"
+    lang: "🌐 JA",
+    about_title: "Market Pulseについて",
+    about_text: "Market Pulseは、株式・為替・暗号通貨・原油・金・債券・指数など、世界の市場をすばやく確認できる軽量ダッシュボードです。信頼できる金融ソースからのリアルタイム価格とインタラクティブなチャートを提供します。"
   },
   uk: {
     home: "Головна",
     about: "Про нас",
     services: "Послуги",
     account: "Акаунт",
-    lang: "🌐 UA"
+    lang: "🌐 UA",
+    about_title: "Про Market Pulse",
+    about_text: "Market Pulse — це швидкий і легкий дашборд для відстеження світових ринків: акції, валютні пари, криптовалюти, нафта, золото, облігації та індекси. Живі ціни, інтерактивні графіки та дані в реальному часі з надійних фінансових джерел — все в одному місці."
   }
 };
 

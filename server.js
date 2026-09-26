@@ -80,7 +80,6 @@ const aliases = new Map([
   ["HG", "COPPER"]
 ]);
 
-const contactMessages = [];
 const marketState = new Map(marketCatalog.map((market) => [market.symbol, createMarket(market)]));
 
 function createMarket(market) {
@@ -448,22 +447,6 @@ async function readRequestBody(req) {
   });
 }
 
-function parseContactBody(body) {
-  let data;
-  try {
-    data = JSON.parse(body || "{}");
-  } catch {
-    throw new Error("Invalid JSON body");
-  }
-  const name = String(data.name || "").trim();
-  const email = String(data.email || "").trim();
-  const message = String(data.message || "").trim();
-  if (!name || !email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) || !message) {
-    throw new Error("Name, valid email and message are required");
-  }
-  return { name, email, message };
-}
-
 async function serveStatic(req, res, pathname) {
   let decodedPath;
   try {
@@ -527,8 +510,7 @@ async function handleApi(req, res, url) {
         "GET /api/markets/:symbol",
         "GET /api/market/:symbol",
         "GET /api/markets/:symbol/history?range=1d|1w|1m",
-        "GET /api/stocks",
-        "POST /api/contact"
+        "GET /api/stocks"
       ]
     });
     return;
@@ -580,18 +562,6 @@ async function handleApi(req, res, url) {
       return;
     }
     sendJson(res, 200, { data: market, updatedAt: new Date().toISOString() });
-    return;
-  }
-
-  if (req.method === "POST" && url.pathname === "/api/contact") {
-    try {
-      const data = parseContactBody(await readRequestBody(req));
-      const message = { id: Date.now(), ...data, createdAt: new Date().toISOString() };
-      contactMessages.push(message);
-      sendJson(res, 201, { ok: true, message: "Message received", data: message });
-    } catch (error) {
-      sendError(res, 400, error.message);
-    }
     return;
   }
 
