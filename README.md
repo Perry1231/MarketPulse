@@ -4,6 +4,8 @@ MarketPulse is a web-based financial market dashboard for monitoring stocks, cry
 
 The project combines a lightweight Node.js backend with a browser-based interface to provide market data, live price updates, historical charts, market categories, and a simple API.
 
+**Disclaimer:** Market prices and data are provided for informational purposes only and may be delayed or inaccurate. Always verify the latest prices and information from official or reliable financial sources before making any financial decisions.
+
 ## Features
 
 * Real-time market data
@@ -483,6 +485,9 @@ If you intend to allow others to use, modify, or distribute the project, conside
 ## Author
 
 **Vladyslav Vytrykysh**
+
+**Disclaimer:** Market prices and data are provided for informational purposes only and may be delayed or inaccurate. Always verify the latest prices and information from official or reliable financial sources before making any financial decisions.
+
 
 GitHub: [Perry1231](https://github.com/Perry1231)
 
